@@ -1,30 +1,21 @@
-#ifndef SH_ICU
-#define SH_ICU
+#ifndef SC_MCU
+#define SC_MCU
 #include "common.h"
-#include "mcu.h"
 
-namespace han
+namespace hyd_15th
 {
 
-	class ICU{
+	class Mcu{
 		private:
-			double room_temp;
-			int danger_situation;
+			
 			
 		public:
-			ICU(){	room_temp = 0;	danger_situation = 0;	}
-			Fever patient1;
-			Vegetative patient2;
-			Nurse nurse;
-			int get_danger_situation(){return danger_situation;}
-			double get_room_temp(){return room_temp;}
+			Mcu(){		}
+		
 			void print();
 
-			void gpio_setting(); // ¹ÎÁö
-			void setup_raspberry();
-			void upload_data(); //kaa°ü·Ã
+			void setup_aduino(string device_port);
 
-			void situation_control(); // ¹ÎÁö
 	};
 
 }

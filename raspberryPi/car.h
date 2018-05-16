@@ -8,23 +8,21 @@ namespace hyd_15th
 
 	class Car{
 		private:
-			//double room_temp;
-			//int danger_situation;
+			//double room_temp;									변수 예시
 			
 		public:
-			/*Car(){	room_temp = 0;	danger_situation = 0;	}
-			Fever patient1;
-			Vegetative patient2;
-			Nurse nurse;
-			int get_danger_situation(){return danger_situation;}
-			double get_room_temp(){return room_temp;}
-			void print();
+			Car(){		}										//기본생성자
+			Mcu controller;										//Mcu class 선언
+			
+//			double get_room_temp(){return room_temp;}			변수 get함수 예시
+//			void set_room_temp(double num){room_temp = num;}	변수 set함수 예시
 
-			void gpio_setting(); 
+			void print();										//필요 함수들 선언 ( 정의는 cpp파일에서 함. )
+
+			
 			void setup_raspberry();
-			void upload_data(); 
+			void gpio_setting(); 
 
-			void situation_control();*/
 	};
 
 }

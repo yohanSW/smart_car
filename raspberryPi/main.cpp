@@ -8,6 +8,7 @@ void init_setting();
 int main(int argc, char *argv[] ){
 	//Local variable + class
 	cout << "main start"<< endl;
+	Car private_car;
 
 
 	//setting all (+multi thread)
@@ -31,5 +32,5 @@ int main(int argc, char *argv[] ){
 void init_setting(){
 	printf("%s \n", "main setting Start!");
 	fflush(stdout);
-	
+	private_car.setup_raspberry();
 }
