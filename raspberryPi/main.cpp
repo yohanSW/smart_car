@@ -1,14 +1,13 @@
 #include "common.h"
 
-using namespace hyd;
+using namespace hyd_15th;
 
 //Global Variable
 void init_setting();
 
 int main(int argc, char *argv[] ){
 	//Local variable + class
-
-	cout << "wowong!"<< endl;
+	cout << "main start"<< endl;
 
 
 	//setting all (+multi thread)
@@ -19,7 +18,7 @@ int main(int argc, char *argv[] ){
 	// while loop
 	while(true){
 		cout << "in while\n"<< endl;
-		//kaa part
+		
 
 	}
 	//t1.join();
