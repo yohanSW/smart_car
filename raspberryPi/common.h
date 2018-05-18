@@ -1,5 +1,5 @@
-#ifndef SH_COMMON
-#define SH_COMMON
+#ifndef SC_COMMON
+#define SC_COMMON
 
 #include <iostream>
 #include <thread>
@@ -19,5 +19,5 @@
 
 using namespace std;
 
-#endif /* SH_COMMON */
+#endif /* SC_COMMON */
 
