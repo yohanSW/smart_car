@@ -15,7 +15,8 @@ scan_enable         = True
 rear_wheels_enable  = True
 front_wheels_enable = True
 pan_enable          = True
-adjusted_angle      = 75    # Calibrate the front wheel angle whose direction is straight
+adjusted_angle      = 0    # Calibrate the front wheel angle whose direction is straight
+approach_angle		= 3
 
 kernel = np.ones((5,5),np.uint8)
 
@@ -37,10 +38,10 @@ CAMERA_Y_ANGLE = 80
 ##################################################
 
 
-fw = controlWheels.ControlWheels()
+cw = controlWheels.ControlWheels()
 picar.setup()
-fw.offset = 0
-fw.turn(adjusted_angle)
+cw.offset = 0
+cw.turn(adjusted_angle)
 
 def nothing(x):
     pass
@@ -48,7 +49,6 @@ def nothing(x):
 def main():
 	global Stop
 	print("Begin!")
-	scan_count = 0              # Count designated direction
 	
 	"""
 	make a thread code
@@ -59,34 +59,34 @@ def main():
 		stopSignal = 0
 		isFoundAngle = 0
 
+		# image processing -> line trace , Determining whether to stop
 		for i in range(9):
             transition_angle[i] = detectCentOfLine()
 			isFoundAngle += transition_angle[i]
-
 		for i in range(3):
 			stopSignal += detectBreak()
 
-		if stopSignal > 2 :
-
-		# If the road `isn't found, isFound is False
-        if isFoundAngle == 0 : 
-            isFound = False
+		# stop state or If the road `isn't found
+		if stopSignal > 2:
+			print 'Stop signal!!!'
+			cw.stop()
+			continue
+		elif isFoundAngle == 0:
+			print 'Cannot detect line...'
+			cw.stop()
+			continue
         else :
-            isFound = True
-            scan_count = 0
-
-		#
-		if isFound == False :
-			print 'cannot detect line...'
-			########### need more code########
-		else :
-
-
+			print 'Movement'
+			angle = dataRefining(transition_angle)
+			#straight move
+			if angle < approach_angle && angle > -approach_angle :
+				cw.turn_straight()
+			#turning
+			else
+				cw.turn(angle)
 
 
-
-
-def detectCentOfLine() :
+def detectCentOfLine():
 
     '''
     INPUT : X
@@ -151,8 +151,26 @@ def detectCentOfLine() :
 
     return cx, cy
 
-def detectBreak() :
+def detectBreak():
 	return 0;
+
+def dataRefining(transition_angle):
+	angle = 0
+	angleCnt = 0
+	angleRange = [0,0,0,0,0,0,0,0,0]
+	angleRangeSub = [0,0,0,0,0,0,0,0,0]
+	for i in range(9):
+		angleRange[int(transition_angle[i]/10)] += 1
+		angleRangeSub[int(transition_angle[i]/10)] += 1
+	angleRange.sort()
+	angleRange.reverse()
+	meanRan = angleRangeSub.index(angleRange[0])
+	for i in range(9):
+		if transition_angle[i] >= meanRan*10 && transition_angle[i] < meanRan*10+10 :
+			angle += transition_angle[i]
+			angleCnt += 1
+	return angle / angleCnt
+
 
 if __name__ == '__main__':
 
