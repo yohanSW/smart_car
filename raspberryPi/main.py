@@ -62,7 +62,7 @@ def main():
 		# image processing -> line trace , Determining whether to stop
 		for i in range(9):
             transition_angle[i] = detectCentOfLine()
-			isFoundAngle += transition_angle[i]
+			#isFoundAngle += transition_angle[i]
 		for i in range(3):
 			stopSignal += detectBreak()
 

@@ -1,5 +1,5 @@
 #*********************************libraries***************************************
-from picar import front_wheels
+from picar import controlWheels
 from time import sleep
 import cv2
 import cv2.cv as cv
