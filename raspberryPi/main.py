@@ -1,5 +1,5 @@
 #*********************************libraries***************************************
-from picar import front_wheels
+from picar import controlWheels
 from time import sleep
 import cv2
 import cv2.cv as cv
@@ -23,8 +23,8 @@ kernel = np.ones((5,5),np.uint8)
 #####################openCv setting##############
 img = cv2.VideoCapture(-1)  # choose a video
 
-SCREEN_WIDTH = 160  # Screen width
-SCREEN_HEIGHT = 120  # Screen Hight
+SCREEN_WIDTH = 640  # Screen width
+SCREEN_HEIGHT = 480  # Screen Hight
 img.set(3,SCREEN_WIDTH)
 img.set(4,SCREEN_HEIGHT)
 
@@ -85,6 +85,7 @@ def main():
 			else
 				cw.turn(angle)
 
+def destroy():
 
 def detectCentOfLine():
 
