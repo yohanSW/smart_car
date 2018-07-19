@@ -44,9 +44,9 @@ class ControlWheels(object):
 			print self._DEBUG_INFO, 'Stop'
 		self.arduino(self._nowAngle, True)
 		
-	def arduino(self,angle,stopSig)
+	def arduino(self,angle,stopSig):
 		cnt += 1
-		ser.write('!' + str(angle), '@' + str(stopSig))
+		ser.write('#'+ str(angle), str(stopSig))
 
 
 

@@ -47,48 +47,49 @@ def nothing(x):
     pass
 
 def main():
-	global Stop
-	print("Begin!")
+    global Stop
+    print("Begin!")
 	
-	"""
-	make a thread code
+    """
+    make a thread code
+    """
+    while True:
+        transition_angle = list()
+        stopSignal = 0
+        isFoundAngle = 0
 
-	"""
-	while True:
-		transition_angle = list()
-		stopSignal = 0
-		isFoundAngle = 0
-
-		# image processing -> line trace , Determining whether to stop
-		for i in range(9):
+        # image processing -> line trace , Determining whether to stop
+        for i in range(9):
             transition_angle[i] = detectCentOfLine()
-			#isFoundAngle += transition_angle[i]
-		for i in range(3):
-			stopSignal += detectBreak()
+            isFoundAngle += transition_angle[i]
+        for i in range(3):
+            stopSignal += detectBreak()
 
-		# stop state or If the road `isn't found
-		if stopSignal > 2:
-			print 'Stop signal!!!'
-			cw.stop()
-			continue
-		elif isFoundAngle == 0:
-			print 'Cannot detect line...'
-			cw.stop()
-			continue
+        # stop state or If the road `isn't found
+        if stopSignal > 2:
+            print 'Stop signal!!!'
+            cw.stop()
+            continue
+        elif isFoundAngle == 0:
+            print 'Cannot detect line...'
+            cw.stop()
+            continue
         else :
-			print 'Movement'
-			angle = dataRefining(transition_angle)
-			#straight move
-			if angle < approach_angle && angle > -approach_angle :
-				cw.turn_straight()
-			#turning
-			else
-				cw.turn(angle)
+            print 'Movement'
+            angle = dataRefining(transition_angle)
+            #straight move
+            if angle < approach_angle and angle > -approach_angle :
+                cw.turn_straight()
+            #turning
+            else:
+                cw.turn(angle)
 
 def destroy():
+    return 0
 
 def detectCentOfLine():
-
+    return 30.5
+"""
     '''
     INPUT : X
     OUTPUT : the (x, y) coordinate of center of road.
@@ -151,35 +152,31 @@ def detectCentOfLine():
         print "interrupt!"
 
     return cx, cy
-
+"""
 def detectBreak():
-	return 0;
+    return 0;
 
 def dataRefining(transition_angle):
-	angle = 0
-	angleCnt = 0
-	angleRange = [0,0,0,0,0,0,0,0,0]
-	angleRangeSub = [0,0,0,0,0,0,0,0,0]
-	for i in range(9):
-		angleRange[int(transition_angle[i]/10)] += 1
-		angleRangeSub[int(transition_angle[i]/10)] += 1
-	angleRange.sort()
-	angleRange.reverse()
-	meanRan = angleRangeSub.index(angleRange[0])
-	for i in range(9):
-		if transition_angle[i] >= meanRan*10 && transition_angle[i] < meanRan*10+10 :
-			angle += transition_angle[i]
-			angleCnt += 1
-	return angle / angleCnt
+    angle = 0
+    angleCnt = 0
+    angleRange = [0,0,0,0,0,0,0,0,0]
+    angleRangeSub = [0,0,0,0,0,0,0,0,0]
+    for i in range(9):
+        angleRange[int(transition_angle[i]/10)] += 1
+        angleRangeSub[int(transition_angle[i]/10)] += 1
+        angleRange.sort()
+        angleRange.reverse()
+        meanRan = angleRangeSub.index(angleRange[0])
+    for i in range(9):
+        if transition_angle[i] >= meanRan*10 and transition_angle[i] < meanRan*10+10 :
+            angle += transition_angle[i]
+            angleCnt += 1
+    return angle / angleCnt
 
 
 if __name__ == '__main__':
-
     try:
         main()
-        #find_face()
-        #Red_lightsOn()
-
     except KeyboardInterrupt:
         destroy()
 
