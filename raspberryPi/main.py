@@ -1,13 +1,11 @@
 #*********************************libraries***************************************
-from picar import controlWheels
+import controlWheels
 from time import sleep
 import cv2
 import cv2.cv as cv
 import numpy as np
-import picar
 #*********************************************************************************
 
-picar.setup()
 # Show image captured by camera, True to turn on, you will need #DISPLAY and it also slows the speed of tracking
 show_image_enable   = False
 draw_circle_enable  = True
@@ -39,7 +37,6 @@ CAMERA_Y_ANGLE = 80
 
 
 cw = controlWheels.ControlWheels()
-picar.setup()
 cw.offset = 0
 cw.turn(adjusted_angle)
 
