@@ -14,7 +14,7 @@ rear_wheels_enable  = True
 front_wheels_enable = True
 pan_enable          = True
 adjusted_angle      = 0    # Calibrate the front wheel angle whose direction is straight
-approach_angle		= 3
+approach_angle      = 3
 error_signal        = -700
 turning_max         = 35
 
@@ -48,7 +48,7 @@ def nothing(x):
 def main():
     global Stop
     print("Begin!")
-	
+    
     """
     make a thread code
     """
@@ -80,12 +80,12 @@ def main():
             cw.stop()
             continue
         else :
-			print 'Movement'
+            print 'Movement'
             angle = dataRefining(transition_angle, len(transition_angle))
             #straight move
             if angle < approach_angle and angle > -approach_angle :
                 print("straight mode :")
-				print (angle)
+                print (angle)
                 cw.turn_straight()
             #turning
             else:
