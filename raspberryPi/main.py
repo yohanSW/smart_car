@@ -93,7 +93,7 @@ def dataRefining(transition_angle):
     angleRange = [0,0,0,0,0,0,0,0,0]
     angleRangeSub = [0,0,0,0,0,0,0,0,0]
     for i in range(9):
-        angleRange[int(transition_angle[i]/10)] += 1
+        angleRange[int(9[i]/10)] += 1
         angleRangeSub[int(transition_angle[i]/10)] += 1
         angleRange.sort()
         angleRange.reverse()

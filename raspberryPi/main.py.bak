@@ -62,7 +62,7 @@ def main():
 				is isFoundAngle += 1
 
         # stop state or If the road `isn't found
-        if stopSignal > 3:
+        if stopSignal > 4:
             print 'Stop signal!!!'
             cw.stop()
             continue
