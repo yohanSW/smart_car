@@ -15,6 +15,7 @@ front_wheels_enable = True
 pan_enable          = True
 adjusted_angle      = 0    # Calibrate the front wheel angle whose direction is straight
 approach_angle		= 3
+error_signal        = -700
 
 kernel = np.ones((5,5),np.uint8)
 
@@ -59,7 +60,7 @@ def main():
         for i in range(9):
             angle_temp , stop_temp = image_processing()
             stopSignal += stop_temp
-            if transition_angle[i]==-700 :
+            if angle_temp == error_signal :
                 isNotFoundAngle += 1
             else
                 transition_angle.append(angle_temp)
@@ -75,7 +76,7 @@ def main():
             continue
         else :
             print 'Movement'
-            angle = dataRefining(transition_angle)
+            angle = dataRefining(transition_angle, len(transition_angle))
             #straight move
             if angle < approach_angle and angle > -approach_angle :
                 cw.turn_straight()
