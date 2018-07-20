@@ -6,7 +6,8 @@ import serial
 ser = serial.Serial('/dev/ttyACM0', 9600)
 print "wowowo"
 
-class ControlWheels(object):''' Front wheels control class '''
+class ControlWheels(object):
+    ''' Front wheels control class '''
     def __init__(self, debug=False, db="config"):
         ''' setup channels and basic stuff '''
         self.db = filedb.fileDB(db=db)
