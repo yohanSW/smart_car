@@ -16,6 +16,7 @@ pan_enable          = True
 adjusted_angle      = 0    # Calibrate the front wheel angle whose direction is straight
 approach_angle		= 3
 error_signal        = -700
+turning_max         = 35
 
 kernel = np.ones((5,5),np.uint8)
 
@@ -62,6 +63,10 @@ def main():
             stopSignal += stop_temp
             if angle_temp == error_signal :
                 isNotFoundAngle += 1
+            elif angle_temp > turning_max :
+                transition_angle.append(turning_max)
+            elif angle_temp < -turning_max :
+                transition_angle.append(-turning_max)
             else :
                 transition_angle.append(angle_temp)
 
