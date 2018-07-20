@@ -15,7 +15,7 @@ pan_enable          = True
 adjusted_angle      = 0    # Calibrate the front wheel angle whose direction is straight
 approach_angle      = 3
 error_signal        = -700
-turning_max         = 35
+turning_max         = 40
 
 kernel = np.ones((5,5),np.uint8)
 
