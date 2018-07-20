@@ -14,7 +14,9 @@ rear_wheels_enable  = True
 front_wheels_enable = True
 pan_enable          = True
 adjusted_angle      = 0    # Calibrate the front wheel angle whose direction is straight
-approach_angle		= 3
+approach_angle      = 3
+error_signal        = -700
+turning_max         = 35
 
 kernel = np.ones((5,5),np.uint8)
 
@@ -46,20 +48,27 @@ def nothing(x):
 def main():
     global Stop
     print("Begin!")
-	
+    
     """
     make a thread code
     """
     while True:
         transition_angle = list()
-        stopSignal = list()
+        stopSignal = 0
         isNotFoundAngle = 0
 
         # image processing -> line trace , Determining whether to stop
-        for i in range(9):
-            transition_angle[i] , stopSignal[i] = image_processing()
-            if transition_angle[i]==-700 :
+        for i in range(17):
+            angle_temp , stop_temp = image_processing()
+            stopSignal += stop_temp
+            if angle_temp == error_signal :
                 isNotFoundAngle += 1
+            elif angle_temp > turning_max :
+                transition_angle.append(turning_max)
+            elif angle_temp < -turning_max :
+                transition_angle.append(-turning_max)
+            else :
+                transition_angle.append(angle_temp)
 
         # stop state or If the road `isn't found
         if stopSignal > 4:
@@ -72,36 +81,44 @@ def main():
             continue
         else :
             print 'Movement'
-            angle = dataRefining(transition_angle)
+            angle = dataRefining(transition_angle, len(transition_angle))
             #straight move
             if angle < approach_angle and angle > -approach_angle :
+                print("straight mode :")
+                print (angle)
                 cw.turn_straight()
             #turning
             else:
+                print("turning mode : ")
+                print(angle)
                 cw.turn(angle)
 
 def destroy():
     return 0
 
 def image_processing():
-    return 30.5
+    return 30.5, 0
 
 
-def dataRefining(transition_angle):
+def dataRefining(transition_angle , cnt):
     angle = 0
     angleCnt = 0
     angleRange = [0,0,0,0,0,0,0,0,0]
     angleRangeSub = [0,0,0,0,0,0,0,0,0]
-    for i in range(9):
-        angleRange[int(9[i]/10)] += 1
+    for i in range(cnt):
+        angleRange[int(transition_angle[i]/10)] += 1
         angleRangeSub[int(transition_angle[i]/10)] += 1
-        angleRange.sort()
-        angleRange.reverse()
-        meanRan = angleRangeSub.index(angleRange[0])
-    for i in range(9):
+    angleRange.sort()
+    angleRange.reverse()
+    meanRan = angleRangeSub.index(angleRange[0])
+    if meanRan > 4 :
+        meanRan += -9
+    for i in range(cnt):
         if transition_angle[i] >= meanRan*10 and transition_angle[i] < meanRan*10+10 :
             angle += transition_angle[i]
             angleCnt += 1
+    if angle == 0 :
+        return 0
     return angle / angleCnt
 
 
