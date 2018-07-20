@@ -40,7 +40,7 @@ class ControlWheels(object):
         self.arduino(self._nowAngle, True)
 
     def arduino(self,angle,stopSig):
-        ser.write('#' + str(int(angle)) +' , ' + str(stopSig))
+        ser.write('#' + str(int(angle)), str(stopSig))
 
 
 
