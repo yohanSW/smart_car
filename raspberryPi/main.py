@@ -53,20 +53,20 @@ def main():
     while True:
         transition_angle = list()
         stopSignal = list()
-        isFoundAngle = 0
+        isNotFoundAngle = 0
 
         # image processing -> line trace , Determining whether to stop
         for i in range(9):
             transition_angle[i] , stopSignal[i] = image_processing()
             if transition_angle[i]==-700 :
-				is isFoundAngle += 1
+                isNotFoundAngle += 1
 
         # stop state or If the road `isn't found
         if stopSignal > 4:
             print 'Stop signal!!!'
             cw.stop()
             continue
-        elif isFoundAngle == 9:
+        elif isNotFoundAngle == 9:
             print 'Cannot detect line...'
             cw.stop()
             continue
