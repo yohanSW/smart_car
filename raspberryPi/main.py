@@ -57,12 +57,12 @@ def main():
         isNotFoundAngle = 0
 
         # image processing -> line trace , Determining whether to stop
-        for i in range(9):
+        for i in range(17):
             angle_temp , stop_temp = image_processing()
             stopSignal += stop_temp
             if angle_temp == error_signal :
                 isNotFoundAngle += 1
-            else
+            else :
                 transition_angle.append(angle_temp)
 
         # stop state or If the road `isn't found
@@ -75,13 +75,17 @@ def main():
             cw.stop()
             continue
         else :
-            print 'Movement'
+			print 'Movement'
             angle = dataRefining(transition_angle, len(transition_angle))
             #straight move
             if angle < approach_angle and angle > -approach_angle :
+                print("straight mode :")
+				print (angle)
                 cw.turn_straight()
             #turning
             else:
+                print("turning mode : ")
+                print(angle)
                 cw.turn(angle)
 
 def destroy():
@@ -99,9 +103,9 @@ def dataRefining(transition_angle , cnt):
     for i in range(cnt):
         angleRange[int(transition_angle[i]/10)] += 1
         angleRangeSub[int(transition_angle[i]/10)] += 1
-        angleRange.sort()
-        angleRange.reverse()
-        meanRan = angleRangeSub.index(angleRange[0])
+    angleRange.sort()
+    angleRange.reverse()
+    meanRan = angleRangeSub.index(angleRange[0])
     for i in range(cnt):
         if transition_angle[i] >= meanRan*10 and transition_angle[i] < meanRan*10+10 :
             angle += transition_angle[i]
