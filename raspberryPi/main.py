@@ -1,8 +1,7 @@
 #*********************************libraries***************************************
 import controlWheels
 from time import sleep
-import cv2
-import cv2.cv as cv
+import image_processing
 import numpy as np
 #*********************************************************************************
 
@@ -19,24 +18,6 @@ error_signal        = -700
 turning_max         = 35
 
 kernel = np.ones((5,5),np.uint8)
-
-#####################openCv setting##############
-img = cv2.VideoCapture(-1)  # choose a video
-
-SCREEN_WIDTH = 640  # Screen width
-SCREEN_HEIGHT = 480  # Screen Hight
-img.set(3,SCREEN_WIDTH)
-img.set(4,SCREEN_HEIGHT)
-
-CENTER_X = SCREEN_WIDTH/2   #x coordinate of center of screen 
-CENTER_Y = SCREEN_HEIGHT/2  #y coordinate of center of screen
-
-# Camera setting
-CAMERA_STEP = 2
-CAMERA_X_ANGLE = 80
-CAMERA_Y_ANGLE = 80
-##################################################
-
 
 cw = controlWheels.ControlWheels()
 cw.offset = 0
