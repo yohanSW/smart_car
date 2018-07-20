@@ -43,7 +43,7 @@ class ControlWheels(object):
 
     def arduino(self,angle,stopSig):
 		minus_sig = 1
-		if(angle < 0)
+		if(angle < 0):
 			angle = -angle
 			minus_sig = 0
 		
