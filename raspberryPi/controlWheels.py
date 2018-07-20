@@ -42,11 +42,11 @@ class ControlWheels(object):
         self.arduino(self._nowAngle, True)
 
     def arduino(self,angle,stopSig):
-		minus_sig = 1
-		if(angle < 0):
-			angle = -angle
-			minus_sig = 0
-		
+        minus_sig = 1
+        if(angle < 0):
+            angle = -angle
+            minus_sig = 0
+        
         ser.write('#'+ str(minus_sig) + ' , ' + str(int(angle)) +' , ' + str(stopSig) ))
 
 
