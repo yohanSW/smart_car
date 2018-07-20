@@ -111,13 +111,13 @@ def dataRefining(transition_angle , cnt):
     angleRange.sort()
     angleRange.reverse()
     meanRan = angleRangeSub.index(angleRange[0])
-    if meanRan > 4
+    if meanRan > 4 :
         meanRan += -9
     for i in range(cnt):
         if transition_angle[i] >= meanRan*10 and transition_angle[i] < meanRan*10+10 :
             angle += transition_angle[i]
             angleCnt += 1
-    if angle == 0
+    if angle == 0 :
         return 0
     return angle / angleCnt
 
