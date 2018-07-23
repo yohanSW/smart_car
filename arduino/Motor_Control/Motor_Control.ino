@@ -38,6 +38,8 @@ void loop() {
   /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
   while(true) 
   {
+    Serial.flush();
+    delay(500);
     if(Serial.available())
     {
       while(Serial.find('#'))
@@ -47,6 +49,7 @@ void loop() {
         if(minus_sig == 0)
           wheel_angle = -wheel_angle;
         is_break = Serial.parseInt();
+        Serial.print(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
       }
       break;
     }
