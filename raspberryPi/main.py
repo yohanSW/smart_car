@@ -57,7 +57,7 @@ def main():
             print 'Stop signal!!!'
             cw.stop()
             continue
-        elif isNotFoundAngle == 9:
+        elif isNotFoundAngle == image_cnt:
             print 'Cannot detect line...'
             cw.stop()
             continue
@@ -77,10 +77,6 @@ def main():
 
 def destroy():
     return 0
-
-def image_processing():
-    return 30.5, 0
-
 
 def dataRefining(transition_angle , cnt):
     angle = 0
