@@ -18,7 +18,7 @@
 /* 브레이크 모터 부분 */
 #define brk_DIR 13 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
 
-#define brk_BRAKE 2 // 모터드라이버 -> 릴레이, LOW: brk_BRAKE 해제 / HIGH: brk_BRAKE
+#define brk_BRAKE 2 // 모터드라이버 -> 릴레이, HIGH: brk_BRAKE 해제 / LOW: brk_BRAKE
 
 #define brk_SPEED 5 // 모터드라이버, PWM을 통한 모터 속도제어
 
