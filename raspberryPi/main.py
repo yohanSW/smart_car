@@ -16,6 +16,7 @@ adjusted_angle      = 0    # Calibrate the front wheel angle whose direction is 
 approach_angle      = 3
 error_signal        = -700
 turning_max         = 40
+image_cnt			= 17
 
 kernel = np.ones((5,5),np.uint8)
 
@@ -39,7 +40,7 @@ def main():
         isNotFoundAngle = 0
 
         # image processing -> line trace , Determining whether to stop
-        for i in range(17):
+        for i in range(image_cnt):
             angle_temp , stop_temp = image_processing()
             stopSignal += stop_temp
             if angle_temp == error_signal :
@@ -52,11 +53,11 @@ def main():
                 transition_angle.append(angle_temp)
 
         # stop state or If the road `isn't found
-        if stopSignal > 4:
+        if stopSignal > (image_cnt/2) :
             print 'Stop signal!!!'
             cw.stop()
             continue
-        elif isNotFoundAngle == 9:
+        elif isNotFoundAngle == image_cnt:
             print 'Cannot detect line...'
             cw.stop()
             continue
@@ -76,10 +77,6 @@ def main():
 
 def destroy():
     return 0
-
-def image_processing():
-    return 30.5, 0
-
 
 def dataRefining(transition_angle , cnt):
     angle = 0
