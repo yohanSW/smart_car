@@ -19,11 +19,11 @@ import numpy as np
 import cv2
 import math
 import time
-img = cv2.VideoCapture(0)
+#img = cv2.VideoCapture(0)
 SCREEN_WIDTH = 640  # Screen width
 SCREEN_HEIGHT = 480  # Screen Height
 
-def image_processing():
+def image_processing(img):
     # Load input image
     _, bgr_image = img.read()
     # Crop the image
@@ -93,14 +93,14 @@ def image_processing():
                 Doesn't have circles detected!
             '''
             stop_status_light = False
-            print("******no red light! go*******")
+            #print("******no red light! go*******")
     except Exception as e:
         '''
             If you have some errors when you drives a car, then
                 computer says that "There is no Red Light".
         '''
         stop_status_light = False
-        print("Error code when detecting circles... (No traffic light, go!!)->", e)
+        #print("Error code when detecting circles... (No traffic light, go!!)->", e)
     #####################################################################################################
 
     '''
@@ -137,17 +137,17 @@ def image_processing():
             avg_theta2 = sum_of_theta2 / len(lines_stop[0])
             # x * sin(avg_theta) + y * cos(avg_theta) = avg_rho
             if ((math.fabs(avg_theta2 * (180.0 / math.pi))) > 82 and math.fabs(avg_theta2 * (180.0 / math.pi)) < 98):
-                print("stop line. stop!!")
+                #print("stop line. stop!!")
                 cv2.line(crop_image, (int((avg_rho2-SCREEN_HEIGHT/2*math.sin(avg_theta2))/(math.cos(avg_theta2)+eps)),SCREEN_HEIGHT), (int(avg_rho2/math.cos(avg_theta2+eps)),SCREEN_HEIGHT/2),(0,0,255),10)      
                 stop_status_line = True
             else:
                 stop_status_line = False
         else:
-            print("no stop line. Go!")
+            #print("no stop line. Go!")
             stop_status_line = False
     except Exception as e:
         stop_status_line = False
-        print("Error code when detecting stop lines... (No stop line, go!)->", e)
+        #print("Error code when detecting stop lines... (No stop line, go!)->", e)
     #################################################################################################
     
     ########################<Lane Detection>############################################################
@@ -188,7 +188,7 @@ def image_processing():
                 angle = 90 - angle
             else:
                 angle = -(90 + angle)
-            print("Angle (left : pos, right : neg)-->", int(angle))
+            #print("Angle (left : pos, right : neg)-->", int(angle))
             '''
                 Exception Handling : Early stop line detection -> just go forward!!
             '''
@@ -200,7 +200,7 @@ def image_processing():
                 cv2.line(crop_image, (int((avg_rho-SCREEN_HEIGHT*math.sin(avg_theta))/(math.cos(avg_theta)+eps)),SCREEN_HEIGHT), (int(avg_rho/math.cos(avg_theta+eps)),0),(255,0,0),3)
                 cv2.line(crop_image, (SCREEN_WIDTH/2,SCREEN_HEIGHT), (int(avg_rho/math.cos(avg_theta+eps)),0),(0,255,0),3)
         else:
-            print("no lane. Stop!")
+            #print("no lane. Stop!")
             angle = -700
     except Exception as e:
         print(e)
@@ -214,6 +214,3 @@ def image_processing():
     cv2.imshow('Real World!',crop_image)
     cv2.imshow('red', red_hue_image)
     return int(angle), stop_status_line or stop_status_light
-while True:
-    #time.sleep(0.1)
-    print(image_processing())

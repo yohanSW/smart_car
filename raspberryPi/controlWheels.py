@@ -37,8 +37,6 @@ class ControlWheels(object):
     def stop(self):
         ''' Stop both wheels '''
         ########need make motor control code
-        if self._DEBUG:
-            print self._DEBUG_INFO, 'Stop'
         self.arduino(self._nowAngle, True)
 
     def arduino(self,angle,stopSig):

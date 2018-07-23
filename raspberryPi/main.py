@@ -1,10 +1,11 @@
 #*********************************libraries***************************************
 import controlWheels
 from time import sleep
-import image_processing
+from image_processing import image_processing
 import numpy as np
+import cv2
 #*********************************************************************************
-
+img = cv2.VideoCapture(0)
 # Show image captured by camera, True to turn on, you will need #DISPLAY and it also slows the speed of tracking
 show_image_enable   = False
 draw_circle_enable  = True
