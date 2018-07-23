@@ -50,6 +50,8 @@ void loop() {
       }
       break;
     }
+    else
+      continue;
   }
   
   steer_angle = wheel_angle * 13 ; // 스티어링 각도와 조향 각도의 비 13 : 1
