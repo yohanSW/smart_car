@@ -1,4 +1,3 @@
-//7.20 윤동식 모터 딜레이 추가
 #define clpin 4 // 엔코더, 클락핀
 #define dtpin 11 // 엔코더, 데이타핀
 #define swpin 12 //엔코더, 스위치핀
@@ -91,12 +90,10 @@ void loop() {
     if (encoderVal <= degree) // 방향 제어
     {
       digitalWrite(DIR, LOW);// CW 방향
-      delay(wheel_angle/10);
     }
     else 
     {
       digitalWrite(DIR, HIGH); // CCW 방향
-      delay(wheel_angle/10);
     }
     
     digitalWrite(SPEED,255);
@@ -106,7 +103,6 @@ void loop() {
     if (encoderVal >= degree-1 && encoderVal <= degree+1)
     {
       digitalWrite(BRAKE,HIGH);
-      delay(wheel_angle/10);
       break;
     }
   } // while문 괄호
