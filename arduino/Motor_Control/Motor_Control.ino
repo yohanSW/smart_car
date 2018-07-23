@@ -50,22 +50,6 @@ void loop() {
       }
       break;
     }
-    else{
-     wheel_angle=-700;
-  }
-
-
-  
-  /*
-  if(wheel_angle != 0 && wheel_angle !=-700){
-   Serial.print("wheel_angleValue=");
-   Serial.println(wheel_angle);
-   Serial.print("is break=");
-   Serial.println(is_break);
-  }
-  */
-
-  
   }
   
   steer_angle = wheel_angle * 13 ; // 스티어링 각도와 조향 각도의 비 13 : 1
