@@ -49,7 +49,7 @@ void setup(){
  
 //  Where the Magic Happens
 void loop(){
-  Serial.print("loop start");
+  Serial.print("@");
   //vivration pin*********************
   int vibration_num = 0;
   vibration_num = analogRead(vibration); 
