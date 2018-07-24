@@ -101,6 +101,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'july24.urls'
@@ -123,7 +125,11 @@ TEMPLATES = [
                 'django.core.context_processors.static',
                 'django.core.context_processors.request',
                 'django_facebook.context_processors.facebook',
+
+                'social_django.context_processors.backends',  # new append  
+                'social_django.context_processors.login_redirect', # new append
             ],
+            'debug' : DEBUG,
         },
     },
 ]
