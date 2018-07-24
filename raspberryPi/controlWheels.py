@@ -48,7 +48,7 @@ class ControlWheels(object):
         ser.write('#'+ str(minus_sig) + ' , ' + str(int(angle)) +' , ' + str(stopSig) )
 
 
-
+'''
 def test(chn=0):
     import time
     controlWheels = ControlWheels()
@@ -70,6 +70,7 @@ def test(chn=0):
                 
 if __name__ == '__main__':
     test()
+'''
 
 
 
