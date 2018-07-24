@@ -1,5 +1,8 @@
+import serial
+
 def crush():
     #set var
+	if ((fd = serialOpen ("/dev/ttyACM0", 115200)) < 0)  // 두번째 인자값이 보레이트 설정
 
     while True :
         while True :
@@ -27,3 +30,5 @@ def crush():
 
 
 def sensing():
+	return fire , heartpulse , sona , impact
+
