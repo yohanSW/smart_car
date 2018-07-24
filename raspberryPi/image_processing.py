@@ -66,7 +66,7 @@ def image_processing(img):
         1) in raspberry pi -> cv2.cv.CV_HOUGH_GRADIENT
         2) in lattepanda -> cv2.HOUGH_GRADIENT
     '''
-    circles = cv2.HoughCircles(red_hue_image, cv2.HOUGH_GRADIENT, 1, 120, 100, 20, 10, 0)
+    circles = cv2.HoughCircles(red_hue_image, cv2.cv.CV_HOUGH_GRADIENT, 1, 120, 100, 20, 10, 0)
     
     '''
         List for putting all circles radius detected

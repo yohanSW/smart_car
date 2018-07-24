@@ -42,7 +42,7 @@ def main():
 
         # image processing -> line trace , Determining whether to stop
         for i in range(image_cnt):
-            angle_temp , stop_temp = image_processing()
+            angle_temp , stop_temp = image_processing(img)
             stopSignal += stop_temp
             if angle_temp == error_signal :
                 isNotFoundAngle += 1
