@@ -44,12 +44,12 @@ void setup(){
 //   analogReference(EXTERNAL);   
   pinMode(Echo_Pin, INPUT);
   pinMode(Trig_Pin, OUTPUT);
-  
 }
  
  
 //  Where the Magic Happens
 void loop(){
+  Serial.print("loop start");
   //vivration pin*********************
   int vibration_num = 0;
   vibration_num = analogRead(vibration); 
