@@ -1,12 +1,9 @@
-<<<<<<< HEAD
 import serial
-=======
 import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BOARD)
 pin = 11 #LED pin number
->>>>>>> 4a6d5c028aa98b7be8c65930c89018f7b61fe745
 
 def crush():
     #set var
