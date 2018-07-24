@@ -215,6 +215,7 @@ def image_processing(img):
     #return angle, stop_status_line or stop_status_light
     cv2.imshow('Real World!',crop_image)
     #cv2.imshow('red', red_hue_image)
+	print("1")
     return int(angle), stop_status_line or stop_status_light
 '''
 while True:
