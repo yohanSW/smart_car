@@ -88,174 +88,97 @@ void setup() {
 
 
 void loop() {
-
-
-
   /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
-
   while(true) 
-
   {
-
-    //Serial.flush();
-
-    //delay(500);
-
     if(Serial.available())
-
     {
-
-      while(Serial.find('#'))
-
+      Serial.flush();
+      delay(500);
+      if(Serial.find('#'))
       {
-
         minus_sig = Serial.parseInt();
-
         wheel_angle=Serial.parseInt();
-
         if(minus_sig == 0)
-
           wheel_angle = -wheel_angle;
-
         is_break = Serial.parseInt();
-
         Serial.print(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
-
       }
-
+      else
+        continue;
       break;
-
     }
-
     else
-
       continue;
-
   }
 
-  
-
   steer_angle = wheel_angle * 13 ; // 스티어링 각도와 조향 각도의 비 13 : 1
-
   degree = steer_angle * gear_ratio;
-
-
   /* 정지와 관련된 동작 수행 부분 */
-  
-  if(is_break == 1 && is_breakING == 0) //정지 신호 발생, 그리고 원래 브레이크모터 동작은 없었음
+    if(is_break == 1 && is_breakING == 0) //정지 신호 발생, 그리고 원래 브레이크모터 동작은 없었음
   { 
-    
     digitalWrite(brk_DIR,LOW); // 항상 CW방향으로 회전
-    
-    digitalWrite(brk_BRAKE,HIGH); //정지 동작을 위해 브레이크 모터 고정 해제
-    
-    digitalWrite(brk_SPEED,255);
-    
-    delay(1500); // 5초 동안 브레이크 모터를 동작시켜 정지 동작 수행
-    
+    digitalWrite(brk_BRAKE,HIGH); //정지 동작을 위해 브레이크 모터 고정 해제   
+    digitalWrite(brk_SPEED,255);   
+    delay(1500); // 5초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
     digitalWrite(brk_BRAKE,LOW); // 차량 브레이크가 당겨진 상태로 고정
-    
     is_breakING = 1; //브레이크모터가 동작중인데 loop를 돌아 중복하여 브레이크모터 동작 방지
-    
   }
   else if(is_break ==1 && is_breakING == 1) // 여전히 정지 신호 발생, 브레이크 모터는 동작 중
   {
-    
     delay(500);
-    
   }
   else if(is_break == 0 && is_breakING == 1) // 브레이크 모터 동작중, 정지 신호 해제
   {
-    
     digitalWrite(brk_DIR,HIGH); // 당겨진 브레이크 모터 풀어주기 위해 방향 반대로 설정
-    
     digitalWrite(brk_BRAKE,HIGH); // 고정된 브레이크 모터 해제
-   
     digitalWrite(brk_SPEED,255);
-    
     delay(1500); // 1.5초 동안 브레이크 모터 해제
-    
     digitalWrite(brk_BRAKE,LOW); // 해체 한 상태로 브레이크 모터 고정
-    
     is_breakING = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
-    
   }
   else // 정시 신호 없음, 그리고 브레이크 동작도 없었음. 즉 정상주행
   {
-         
   }
-  
-
   /* 엔코더 조향각이 바뀔 때마다 steer_angle입력을 막기 위해 while문 추가*/
-
   while(1)
-
   {
-
     int change = getEncoderTurn(); // encoder 각도 변화량
-
     encoderVal = encoderVal + change; // encoder 각도 갱신
-
-
-
     /* encoder 각도계산 종료시 초기화, 자율주행 종료시 switch OFF */
-
     if (digitalRead(swpin) == LOW)
-
     {
-
       encoderVal = 0;
-
     }
-
+    Serial.print("encoder val : ");
+    Serial.print(encoderVal);
+    Serial.print("degree val : ");
+    Serial.print(degree);
     
-
-    Serial.println(encoderVal);
-
-    
-
     digitalWrite(BRAKE,LOW); // 모터동작을 시작하기 위해 브레이크 해제
-
-    
-
     if (encoderVal <= degree) // 방향 제어
-
     {
-
       digitalWrite(DIR, LOW);// CW 방향
-
+      if(encoderVar > degree){
+        digitalWrite(BRAKE,HIGH);
+      break;
+      }
     }
-
     else 
-
     {
-
       digitalWrite(DIR, HIGH); // CCW 방향
-
+      if(encoderVar < degree){
+        digitalWrite(BRAKE,HIGH);
+      break;
+      }
     }
-
-    
-
     digitalWrite(SPEED,255);
 
 
-
     /* 실제 엔코더의 각도가 원하는 엔코더 각도 범주 안에 들어올 경우 */
-
     /* 브레이크를 작동하고 while문을 벗어난다 */
-
-    if (encoderVal >= degree-1 && encoderVal <= degree+1)
-
-    {
-
-      digitalWrite(BRAKE,HIGH);
-
-      break;
-
-    }
-
+    
   } // while문 괄호
-
 } // loop문 괄호
 
 
