@@ -44,8 +44,9 @@ class ControlWheels(object):
         if(angle < 0):
             angle = -angle
             minus_sig = 0
-        
-        ser.write('#'+ str(minus_sig) + ' , ' + str(int(angle)) +' , ' + str(stopSig) )
+		ser_str = '#'+ str(minus_sig) + ' , ' + str(int(angle)) +' , ' + str(stopSig)
+        ser.write(ser_str)
+		print("wow")
 
 
 '''
@@ -67,7 +68,7 @@ def test(chn=0):
             controlWheels.stop()
     except KeyboardInterrupt:
         controlWheels.turn_straight()
-                
+
 if __name__ == '__main__':
     test()
 '''

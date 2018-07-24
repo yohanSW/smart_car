@@ -53,15 +53,15 @@ def main():
 
         # stop state or If the road `isn't found
         if stopSignal > (image_cnt/2) :
-            print 'Stop signal!!!'
+            #print 'Stop signal!!!'
             cw.stop()
             continue
         elif isNotFoundAngle == image_cnt:
-            print 'Cannot detect line...'
+            #print 'Cannot detect line...'
             cw.stop()
             continue
         else :
-            print 'Movement'
+            #print 'Movement'
             angle = dataRefining(transition_angle, len(transition_angle))
             #straight move
             if angle < approach_angle and angle > -approach_angle :

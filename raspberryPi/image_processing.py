@@ -1,7 +1,7 @@
 '''
     Project : Autonomous Driving
     Developer : Song Chi Heon, Hyun Chung Hwan, Geum Dong Il
-    
+
     [Function]
     1. Lane Following Assist
     2. Detect red traffic light and stop.
@@ -51,7 +51,7 @@ def image_processing(img):
     '''
     for_red_light = bgr_image[SCREEN_HEIGHT/3:480, 0:SCREEN_WIDTH].copy()
     #for_red_light = bgr_image[0:SCREEN_HEIGHT, 0:SCREEN_WIDTH].copy()
-    
+
     '''
         1 frame of video(= 1 image) should go through filter to find red image.
         We will use HSV scheme for detecting red region
@@ -60,14 +60,14 @@ def image_processing(img):
     #originally, range of bgr value is (0,100,100) to (10, 255, 255)
     red_hue_image = cv2.inRange(hsv, (0,100,150), (10, 255, 255))
     red_hue_image = cv2.medianBlur(red_hue_image, 5)
-    
+
     '''
         second parameters of houghcircles... you should change this code word.(Notice!)
         1) in raspberry pi -> cv2.cv.CV_HOUGH_GRADIENT
         2) in lattepanda -> cv2.HOUGH_GRADIENT
     '''
     circles = cv2.HoughCircles(red_hue_image, cv2.cv.CV_HOUGH_GRADIENT, 1, 120, 100, 20, 10, 0)
-    
+
     '''
         List for putting all circles radius detected
     '''
@@ -107,7 +107,7 @@ def image_processing(img):
         About lane, we should use canny edge detection algorithm
     '''
     edge_image = cv2.Canny(crop_image, 150, 250, apertureSize=3)
-    
+
     ########################<Stop Line>############################################################
     '''
         ROI for detecting stop line
@@ -138,7 +138,7 @@ def image_processing(img):
             # x * sin(avg_theta) + y * cos(avg_theta) = avg_rho
             if ((math.fabs(avg_theta2 * (180.0 / math.pi))) > 82 and math.fabs(avg_theta2 * (180.0 / math.pi)) < 98):
                 #print("stop line. stop!!")
-                cv2.line(crop_image, (int((avg_rho2-SCREEN_HEIGHT/2*math.sin(avg_theta2))/(math.cos(avg_theta2)+eps)),SCREEN_HEIGHT), (int(avg_rho2/math.cos(avg_theta2+eps)),SCREEN_HEIGHT/2),(0,0,255),10)      
+                cv2.line(crop_image, (int((avg_rho2-SCREEN_HEIGHT/2*math.sin(avg_theta2))/(math.cos(avg_theta2)+eps)),SCREEN_HEIGHT), (int(avg_rho2/math.cos(avg_theta2+eps)),SCREEN_HEIGHT/2),(0,0,255),10)
                 stop_status_line = True
             else:
                 stop_status_line = False
@@ -149,7 +149,7 @@ def image_processing(img):
         stop_status_line = False
         #print("Error code when detecting stop lines... (No stop line, go!)->", e)
     #################################################################################################
-    
+
     ########################<Lane Detection>############################################################
     '''
         Detecting lane using Hough-Transform
@@ -215,7 +215,6 @@ def image_processing(img):
     #return angle, stop_status_line or stop_status_light
     cv2.imshow('Real World!',crop_image)
     #cv2.imshow('red', red_hue_image)
-	print("1")
     return int(angle), stop_status_line or stop_status_light
 '''
 while True:
