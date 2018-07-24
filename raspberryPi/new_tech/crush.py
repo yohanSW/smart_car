@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 import serial
+=======
+import RPi.GPIO as GPIO
+import time
+
+GPIO.setmode(GPIO.BOARD)
+pin = 11 #LED pin number
+>>>>>>> 4a6d5c028aa98b7be8c65930c89018f7b61fe745
 
 def crush():
     #set var
@@ -18,14 +26,34 @@ def crush():
                 #if heart attack has been happend, Auto driving must be started!!
                 Accident = 1
 
-            if impact == 1 and sona <= 40 :
+            if impact == 1 and ( sona <= 40 or sona >= 1000 ) :
                 print("Car crush has been happened")
                 Accident = 1
         
         
-            if Accident == 1 :
-                gpsx, gpsy = gps()
+            if Accident == 1 : # if Accident happend,
 
+                gpsx, gpsy = gps() # GPS signal is transmitted,
+
+                ######################LED SOS SIGNAL######################
+                for i in range(3) : # SOS 3 times
+                    for i in range(3) : # signal 'S'
+                        GPIO.output(pin,True)
+                        time.sleep(0.5)
+                        GPIO.output(pin,False)
+                        time.sleep(1)
+                    for i in range(3) : # signal 'O'
+                        GPIO.output(pin,True)
+                        time.sleep(3)
+                        GPIO.output(pin,False)
+                        time.sleep(1)    
+                    for i in range(3) : # signal 'S'
+                        GPIO.output(pin,True)
+                        time.sleep(0.5)
+                        GPIO.output(pin,False)
+                        time.sleep(1)
+
+                GPIO.cleanup()
                 break
 
 
