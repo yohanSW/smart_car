@@ -151,7 +151,7 @@ void loop() {
     
     digitalWrite(brk_SPEED,255);
     
-    delay(5000); // 5초 동안 브레이크 모터를 동작시켜 정지 동작 수행
+    delay(1500); // 5초 동안 브레이크 모터를 동작시켜 정지 동작 수행
     
     digitalWrite(brk_BRAKE,LOW); // 차량 브레이크가 당겨진 상태로 고정
     
@@ -173,7 +173,7 @@ void loop() {
    
     digitalWrite(brk_SPEED,255);
     
-    delay(5000); // 1.5초 동안 브레이크 모터 해제
+    delay(1500); // 1.5초 동안 브레이크 모터 해제
     
     digitalWrite(brk_BRAKE,LOW); // 해체 한 상태로 브레이크 모터 고정
     
