@@ -27,12 +27,27 @@ def crush():
         
         
             if Accident == 1 : # if Accident happend,
+
                 gpsx, gpsy = gps() # GPS signal is transmitted,
-                for i in range(5) : # led blinked 5 times.
-                    GPIO.output(pin,True)
-                    time.sleep(1)
-                    GPIO.output(pin,False)
-                    time.sleep(1)
+
+                ######################LED SOS SIGNAL######################
+                for i in range(3) : # SOS 3 times
+                    for i in range(3) : # signal 'S'
+                        GPIO.output(pin,True)
+                        time.sleep(0.5)
+                        GPIO.output(pin,False)
+                        time.sleep(1)
+                    for i in range(3) : # signal 'O'
+                        GPIO.output(pin,True)
+                        time.sleep(3)
+                        GPIO.output(pin,False)
+                        time.sleep(1)    
+                    for i in range(3) : # signal 'S'
+                        GPIO.output(pin,True)
+                        time.sleep(0.5)
+                        GPIO.output(pin,False)
+                        time.sleep(1)
+
                 GPIO.cleanup()
                 break
 
