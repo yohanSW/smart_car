@@ -21,7 +21,7 @@ class ControlWheels(object):
 
     def turn_straight(self):
         ''' Turn the front wheels back straight '''
-        self.arduino(self._angle["straight"], False)
+        self.arduino(self._angle["straight"], 0)
 
     def turn(self, angle):
         ''' Turn the front wheels to the giving angle '''
@@ -32,12 +32,12 @@ class ControlWheels(object):
         if angle > self._angle["right"]:
             angle = self._angle["right"]
         self._nowAngle = angle
-        self.arduino(angle, False)
+        self.arduino(angle, 0)
 
     def stop(self):
         ''' Stop both wheels '''
         ########need make motor control code
-        self.arduino(self._nowAngle, True)
+        self.arduino(self._nowAngle, 1)
 
     def arduino(self,angle,stopSig):
         minus_sig = 1
