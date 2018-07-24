@@ -20,7 +20,7 @@ import cv2
 import math
 import time
 #img = cv2.VideoCapture(0)
-SCREEN_WIDTH = 640  # Screen width
+SCREEN_WIDTH = 640  # Screen Width
 SCREEN_HEIGHT = 480  # Screen Height
 
 def image_processing(img):
@@ -66,7 +66,7 @@ def image_processing(img):
         1) in raspberry pi -> cv2.cv.CV_HOUGH_GRADIENT
         2) in lattepanda -> cv2.HOUGH_GRADIENT
     '''
-    circles = cv2.HoughCircles(red_hue_image, cv2.cv.CV_HOUGH_GRADIENT, 1, 120, 100, 20, 10, 0)
+    circles = cv2.HoughCircles(red_hue_image, cv2.HOUGH_GRADIENT, 1, 120, 100, 20, 10, 0)
     
     '''
         List for putting all circles radius detected
@@ -192,25 +192,32 @@ def image_processing(img):
             '''
                 Exception Handling : Early stop line detection -> just go forward!!
             '''
-            if math.fabs(avg_theta * (180.0) / math.pi) > 72 and math.fabs(avg_theta * (180.0) / math.pi) < 108 and math.fabs(avg_rho) < (SCREEN_HEIGHT/2):
+            if math.fabs(avg_theta * (180.0) / math.pi) > 72 and math.fabs(avg_theta * (180.0) / math.pi) < 108 and math.fabs(avg_rho) < (SCREEN_HEIGHT/2) and stop_status_line == False:
                 cv2.line(crop_image, (320, 480), (320, 0), (255, 0, 255), 5)
                 stop_status_line = False
                 angle = 0.0
             else:
                 cv2.line(crop_image, (int((avg_rho-SCREEN_HEIGHT*math.sin(avg_theta))/(math.cos(avg_theta)+eps)),SCREEN_HEIGHT), (int(avg_rho/math.cos(avg_theta+eps)),0),(255,0,0),3)
                 cv2.line(crop_image, (SCREEN_WIDTH/2,SCREEN_HEIGHT), (int(avg_rho/math.cos(avg_theta+eps)),0),(0,255,0),3)
+                if stop_status_line == True:
+                    angle = 0.0
         else:
             #print("no lane. Stop!")
             angle = -700
     except Exception as e:
-        print(e)
-        print("no angle detected!!")
-        print("default error angle : 1000")
+        #print(e)
+        #print("no angle detected!!")
+        #print("default error angle : 1000")
         angle = -700
     #################################################################################################
     if cv2.waitKey(1) & 0xFF == ord('q') :
         print ("interrupt!")
     #return angle, stop_status_line or stop_status_light
     cv2.imshow('Real World!',crop_image)
-    cv2.imshow('red', red_hue_image)
+    #cv2.imshow('red', red_hue_image)
     return int(angle), stop_status_line or stop_status_light
+'''
+while True:
+    #time.sleep(0.1)
+    print(image_processing(img))
+'''
