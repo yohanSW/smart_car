@@ -35,7 +35,7 @@ double degree; // 회전시키고자 하는 엔코더 각도
 /* Encoder Value 초기화 */
 
 int encoderVal = 0; 
-int brk_cnt = 0;
+int mt_ctrl_cnt = 0;
 
 static int oldA = HIGH;
 
@@ -126,8 +126,7 @@ void loop() {
       }
       else
         continue;
-        
-      Serial.println('A');
+       
 
       break;
 
@@ -207,23 +206,42 @@ void loop() {
     /* encoder 각도계산 종료시 초기화, 자율주행 종료시 switch OFF */
 
     if (digitalRead(swpin) == LOW)
+
     {
+
       encoderVal = 0;
+
     }
+
+    
+
     Serial.println(encoderVal);
 
-   
     digitalWrite(BRAKE,LOW); // 모터동작을 시작하기 위해 브레이크 해제
 
+    
+
     if (encoderVal <= degree) // 방향 제어
+
     {
+
       digitalWrite(DIR, LOW);// CW 방향
+
     }
+
     else 
+
     {
+
       digitalWrite(DIR, HIGH); // CCW 방향
+
     }
+
+   
+
     digitalWrite(SPEED,255);
+
+
 
 
 
@@ -231,16 +249,11 @@ void loop() {
 
     /* 브레이크를 작동하고 while문을 벗어난다 */
 
-
- Serial.println("TEST 0");
-      
     if ( encoderVal >= degree-3 && encoderVal <= degree+3 )
     {
-      Serial.println("TEST 1");
       
       digitalWrite(BRAKE,HIGH);
-      a=0;
-      //brk_cnt =0;
+      mt_ctrl_cnt=0;
       break;
       
     }
@@ -249,41 +262,36 @@ void loop() {
         {
       digitalWrite(BRAKE,HIGH);
       
-      Serial.println("TEST 2");
       if(encoderVal >= 50){
         
         encoderVal = encoderVal - 1;
-        a++;
-        //brk_cnt++;
+        mt_ctrl_cnt++;
       }
       else {
         encoderVal = encoderVal + 1;
-        a--;
-        //brk_cnt--;
+        mt_ctrl_cnt--;
      
       }
       break;
     }
 
     
-    if(a == 1){
-      if(encoderVal == 50-a)
+    if(mt_ctrl_cnt == 1){
+      if(encoderVal == 50-mt_ctrl_cnt)
       {}
       else{
-      Serial.println(a);
-      encoderVal = encoderVal +a;
-      a=0;
-      //brk_cnt = 0;
+      //Serial.println(mt_ctrl_cnt);
+      encoderVal = encoderVal + mt_ctrl_cnt;
+      mt_ctrl_cnt=0;
       }
      }
-     else if(a== -1){
-      if(encoderVal == -50-a)
+     else if(mt_ctrl_cnt== -1){
+      if(encoderVal == -50 - mt_ctrl_cnt)
       {}
       else{
-      Serial.println(a);
-      encoderVal = encoderVal +a;
-      a=0;
-      //brk_cnt = 0;
+      //Serial.println(mt_ctrl_cnt);
+      encoderVal = encoderVal + mt_ctrl_cnt;
+      mt_ctrl_cnt=0;
       }
      }
 
