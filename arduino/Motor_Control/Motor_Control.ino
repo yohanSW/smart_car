@@ -231,47 +231,61 @@ void loop() {
 
     /* 브레이크를 작동하고 while문을 벗어난다 */
 
+
+ Serial.println("TEST 0");
+      
     if ( encoderVal >= degree-3 && encoderVal <= degree+3 )
     {
-
+      Serial.println("TEST 1");
+      
       digitalWrite(BRAKE,HIGH);
-      brk_cnt =0;
+      a=0;
+      //brk_cnt =0;
       break;
       
     }
 
-    if ( encoderVal > 50 || encoderVal < -50 )
-    {
-      
-      if (brk_cnt ==0){
+   else if(encoderVal >= 50 || encoderVal <= -50 )
+        {
       digitalWrite(BRAKE,HIGH);
-      Serial.println("hi");
-      Serial.println(encoderVal);
-      brk_cnt =1;
-      }
-      if (encoderVal >50)
-      {
-        
-        digitalWrite(DIR,LOW);
-        digitalWrite(SPEED,255);
-        if (brk_cnt >= 15){
-          brk_cnt=0;
-        }
-        
-        
-      }
-      else if (encoderVal < -50)
-      {
-        digitalWrite(DIR,HIGH);
-        digitalWrite(SPEED,255);
-        if (brk_cnt >= 15){
-          brk_cnt=0;
-        }
-        
-      }
-      brk_cnt++;
       
+      Serial.println("TEST 2");
+      if(encoderVal >= 50){
+        
+        encoderVal = encoderVal - 1;
+        a++;
+        //brk_cnt++;
+      }
+      else {
+        encoderVal = encoderVal + 1;
+        a--;
+        //brk_cnt--;
+     
+      }
+      break;
     }
+
+    
+    if(a == 1){
+      if(encoderVal == 50-a)
+      {}
+      else{
+      Serial.println(a);
+      encoderVal = encoderVal +a;
+      a=0;
+      //brk_cnt = 0;
+      }
+     }
+     else if(a== -1){
+      if(encoderVal == -50-a)
+      {}
+      else{
+      Serial.println(a);
+      encoderVal = encoderVal +a;
+      a=0;
+      //brk_cnt = 0;
+      }
+     }
 
 
   } // while문 괄호
