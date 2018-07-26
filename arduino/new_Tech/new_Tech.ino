@@ -17,7 +17,7 @@ int Echo_Pin = 8;
 //***********************************
 
 //fire sensor*******************
-int firePin = 2;
+int firePin = A2;
 int fir = 0;
 //***********************************
  
@@ -61,7 +61,7 @@ void loop(){
       vibration_num = 0;
 
   //fire*****************************
-  fir = digitalRead(firePin);
+  fir = analogRead(firePin);
   Serial.print("fire num : ");
   Serial.println(fir);  
     
