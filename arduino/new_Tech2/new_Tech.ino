@@ -55,10 +55,6 @@ void loop(){
   vibration_num = analogRead(vibration); 
   //Serial.print("vivration num : ");
   //Serial.println(vibration_num);
-   if(vibration_num > 10)
-      vibration_num = 1;
-    else
-      vibration_num = 0;
 
   //fire*****************************
   fir = analogRead(firePin);
@@ -93,7 +89,7 @@ void loop(){
   Serial.println(fir);
   Serial.println(distance);
   Serial.println(BPM);
-  delay(500);                             //  take a break
+  delay(3000);                             //  take a break
 }
  
 void ledFadeToBeat(){
