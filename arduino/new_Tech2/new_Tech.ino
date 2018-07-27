@@ -1,6 +1,8 @@
 #define PROCESSING_VISUALIZER 1
 #define SERIAL_PLOTTER  2
 
+int WaitSignal = 0; //Wait signal for data storage in raspberryPi board
+
 //  Variables
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
 int blinkPin = 13;                // pin to blink led at each beat
@@ -85,11 +87,16 @@ void loop(){
   }
   ledFadeToBeat();                      // Makes the LED Fade Effect Happen 
   //***********************************
-  Serial.println(vibration_num);
-  Serial.println(fir);
-  Serial.println(distance);
-  Serial.println(BPM);
-  delay(3000);                             //  take a break
+  WaitSignal = Serial.parseInt();
+  if(WaitSignal == 1) // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked
+  {
+    delay(8200); //LED blinked time
+    WaitSignal = 0;
+  }
+    Serial.println(vibration_num);
+    Serial.println(fir);
+    Serial.println(distance);
+    Serial.println(BPM);
 }
  
 void ledFadeToBeat(){
