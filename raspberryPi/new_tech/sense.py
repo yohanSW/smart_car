@@ -2,6 +2,11 @@ import serial
 
 ser = serial.Serial("/dev/ttyACM0",115200)
 
+def WaitSignal():
+    WaitSignal = 1
+    ser.write(str(WaitSignal))
+    print("SOS Signal Activated")
+
 def sensing():
     ##print('c')
     if ser.readable() :
@@ -17,5 +22,6 @@ def sensing():
     else :
         return -1, -1, -1, -1
     return impact, fire, sona, heartpulse
+
 
 
