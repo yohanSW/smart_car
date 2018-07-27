@@ -29,13 +29,15 @@ while True :
                 Accident = 1
 
 
-            if impact >= 700 and ( sona <= 10 or sona >= 4000 ) : ##sona data occasionally measured as 2000~2500 without any reason.
+            if impact >= 400 and ( sona <= 10 or sona >= 4000 ) : ##sona data occasionally measured as 2000~2500 without any reason.
                 print("Car crush has been happened")
                 Accident = 1
 
 
             if Accident == 1 : # if Accident happend,
-
+                
+                sense.WaitSignal()
+                
                 ##gpsx, gpsy = gps() # GPS signal is transmitted,
                 ######################LED SOS SIGNAL######################
                 for i in range(1) : # SOS 3 times
@@ -64,4 +66,5 @@ while True :
     except Exception as e:
         print(e)
         break
+
 
