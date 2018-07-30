@@ -4,7 +4,7 @@ import time
 
 GPIO.setmode(GPIO.BOARD)
 pin = 11 #LED pin number
-ser = serial.Serial("/dev/ttyACM0",115200)  # µÎ¹øÂ° ÀÎÀÚ°ªÀÌ º¸·¹ÀÌÆ® ¼³Á¤
+ser = serial.Serial("/dev/ttyACM0",115200)  # ë‘ë²ˆì§¸ ì¸ìê°’ì´ ë³´ë ˆì´íŠ¸ ì„¤ì •
 
 def crush():
     #set var
@@ -19,16 +19,16 @@ def crush():
 
             Accident = 0
 
-            if fire == 1 :
+            if fire >= 500 : ##fire signal is measured as analog, if it is over 500, then there are fire around sensor.
                 print("Fire Fire Fire")
                 Accident = 1
 
-            if heartpulse >= 130 and heartpulse <=40 :
+            if heartpulse >= 130 and heartpulse <=30 : ##normal heartpulse is between 49 ~ 90
                 print("Driver is under heart attack")
                 #if heart attack has been happend, Auto driving must be started!!
                 Accident = 1
 
-            if impact == 1 and ( sona <= 40 or sona >= 1000 ) :
+            if impact == 1 and ( sona <= 20 or sona >= 4000 ) : ##sona data occasionally measured as 2000~2500 without any reason.
                 print("Car crush has been happened")
                 Accident = 1
 
