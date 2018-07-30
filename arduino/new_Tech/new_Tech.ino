@@ -1,6 +1,8 @@
 #define PROCESSING_VISUALIZER 1
 #define SERIAL_PLOTTER  2
 
+int WaitSignal = 0; //Wait signal for data storage in raspberryPi board
+
 //  Variables
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
 int blinkPin = 13;                // pin to blink led at each beat
@@ -49,21 +51,17 @@ void setup(){
  
 //  Where the Magic Happens
 void loop(){
-  Serial.print("@");
+  //Serial.print("@");
   //vivration pin*********************
   int vibration_num = 0;
   vibration_num = analogRead(vibration); 
-  Serial.print("vivration num : ");
-  Serial.println(vibration_num);
-   if(vibration_num > 10)
-      vibration_num = 1;
-    else
-      vibration_num = 0;
+  //Serial.print("vivration num : ");
+  //Serial.println(vibration_num);
 
   //fire*****************************
   fir = analogRead(firePin);
-  Serial.print("fire num : ");
-  Serial.println(fir);  
+  //Serial.print("fire num : ");
+  //Serial.println(fir);  
     
   //ultrasonic waves pin***************
   long duration, distance;
@@ -72,13 +70,13 @@ void loop(){
   digitalWrite(Trig_Pin, LOW);
   duration = pulseIn(Echo_Pin, HIGH);
   distance = ((float)(340 * duration) / 10000) / 2;
-  Serial.print("거리:");         
-  Serial.print(distance);
-  Serial.println("cm");
+  //Serial.print("거리:");         
+  //Serial.print(distance);
+  //Serial.println("cm");
   //***********************************
 
   //heart beat*************************
-  serialOutput() ;       
+  //serialOutput() ;       
   if (QS == true){     // A Heartbeat Was Found
                        // BPM and IBI have been Determined
                        // Quantified Self "QS" true when arduino finds a heartbeat
@@ -89,8 +87,16 @@ void loop(){
   }
   ledFadeToBeat();                      // Makes the LED Fade Effect Happen 
   //***********************************
-  
-  delay(500);                             //  take a break
+  WaitSignal = Serial.parseInt();
+  if(WaitSignal == 1) // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked
+  {
+    delay(8200); //LED blinked time
+    WaitSignal = 0;
+  }
+    Serial.println(vibration_num);
+    Serial.println(fir);
+    Serial.println(distance);
+    Serial.println(BPM);
 }
  
 void ledFadeToBeat(){
@@ -98,3 +104,4 @@ void ledFadeToBeat(){
     fadeRate = constrain(fadeRate,0,255);   //  keep LED fade value from going into negative numbers!
     analogWrite(fadePin,fadeRate);          //  fade LED
   }
+
