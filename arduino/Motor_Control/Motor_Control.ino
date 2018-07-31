@@ -67,9 +67,10 @@ void loop() {
 
   if(is_driving != 0){
     break_mode();
-  
     control(degree, encoderVal);
   }
+  else
+    digitalWrite(BRAKE,HIGH);
 } // loop문 괄호
 
 
