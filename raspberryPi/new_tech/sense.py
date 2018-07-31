@@ -14,14 +14,16 @@ def sensing():
         fire = int(ser.readline())
         sona = int(ser.readline())
         heartpulse = int(ser.readline())
+        touchresult = int(ser.readline())
         print("impact : " + str(impact))
         print("fire : " + str(fire))
         print("sona : " + str(sona))
         print("heartpulse : " + str(heartpulse))
+        print("touchresult : " + str(touchresult))
         
     else :
-        return -1, -1, -1, -1
-    return impact, fire, sona, heartpulse
+        return -1, -1, -1, -1, -1
+    return impact, fire, sona, heartpulse, touchresult
 
 
 
