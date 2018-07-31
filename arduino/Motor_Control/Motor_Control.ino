@@ -78,7 +78,8 @@ void get_data(){
     /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
   while(true) 
   {
-    is_driving = digitalRead(auto_DRI);
+    //is_driving = digitalRead(auto_DRI);
+    is_driving = 1;
     break_order = digitalRead(auto_STOP);
     if(Serial.available())
     {
