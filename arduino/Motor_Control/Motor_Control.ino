@@ -62,10 +62,14 @@ void loop() {
   steer_angle = wheel_angle * 13 ; // 스티어링 각도와 조향 각도의 비 13 : 1
   degree = steer_angle * gear_ratio;
 
-  break_mode();
-  
-  control(degree);
+  int change = getEncoderTurn(); // encoder 각도 변화량
+  encoderVal = encoderVal + change; // encoder 각도 갱신
 
+  if(is_driving != 0){
+    break_mode();
+  
+    control(degree, encoderVal);
+  }
 } // loop문 괄호
 
 
@@ -142,13 +146,10 @@ int getEncoderTurn(void)
   return result;
 }
 
-void control(int degree){
+void control(int degree, int &encoderVal){
   /* 엔코더 조향각이 바뀔 때마다 steer_angle입력을 막기 위해 while문 추가*/
   while(1)
   {
-    int change = getEncoderTurn(); // encoder 각도 변화량
-    encoderVal = encoderVal + change; // encoder 각도 갱신
-
     /* encoder 각도계산 종료시 초기화, 자율주행 종료시 switch OFF */
     if (digitalRead(swpin) == LOW)
       encoderVal = 0;
