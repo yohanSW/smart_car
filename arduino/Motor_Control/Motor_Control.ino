@@ -14,6 +14,12 @@
 #define brk_BRAKE 2 // 모터드라이버 -> 릴레이, HIGH: brk_BRAKE 해제 / LOW: brk_BRAKE
 #define brk_SPEED 5 // 모터드라이버, PWM을 통한 모터 속도제어
 
+/* 자율주행여부, 브레이크제어 코드 */
+#define auto_DRI 9
+#define auto_STOP 10
+int is_driving = 0;
+int break_order = 0;
+
 double steer_angle; // 회전시키고자 하는 스티어링 각도
 double degree; // 회전시키고자 하는 엔코더 각도
 
@@ -39,6 +45,8 @@ void setup() {
  pinMode (brk_BRAKE, OUTPUT);
  pinMode (brk_SPEED, OUTPUT);
  pinMode (brk_DIR, OUTPUT);
+ pinMode (auto_DRI, INPUT);
+ pinMode (auto_STOP, INPUT); 
  digitalWrite (brk_BRAKE , LOW); // 데이터를 입력받기 전엔 브레이크 모터는 정지상태로 시작
  digitalWrite (swpin, HIGH); // encoder 동작을 위한 switch ON
  digitalWrite (BRAKE, HIGH); // 데이터를 입력받기 전엔 모터는 정지상태로 시작
@@ -65,6 +73,8 @@ void get_data(){
     /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
   while(true) 
   {
+    is_driving = digitalRead(auto_DRI);
+    break_order = digitalRead(auto_STOP);
     if(Serial.available())
     {
       if(Serial.find('#'))
@@ -74,6 +84,8 @@ void get_data(){
         if(minus_sig == 0)
           wheel_angle = -wheel_angle;
         is_break = Serial.parseInt();
+        if(is_break == 1 || break_order ==1)
+          is_break = 1;
         Serial.print(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
       }
       else
