@@ -21,6 +21,13 @@ int Echo_Pin = 8;
 //fire sensor*******************
 int firePin = A2;
 int fir = 0;
+
+//Touch sensor*******************
+int touchpin1 = 2;
+int touchpin2 = 4;
+int touchpin3 = 7;
+int touch_result;
+
 //***********************************
  
 // Volatile Variables, used in the interrupt service routine!
@@ -46,6 +53,9 @@ void setup(){
 //   analogReference(EXTERNAL);   
   pinMode(Echo_Pin, INPUT);
   pinMode(Trig_Pin, OUTPUT);
+  pinMode(touchpin1, INPUT);
+  pinMode(touchpin2, INPUT);
+  pinMode(touchpin3, INPUT);
 }
  
  
@@ -83,9 +93,14 @@ void loop(){
         fadeRate = 255;         // Makes the LED Fade Effect Happen
                                 // Set 'fadeRate' Variable to 255 to fade LED with pulse
         serialOutputWhenBeatHappens();   // A Beat Happened, Output that to serial.     
-        QS = false;                      // reset the Quantified Self flag for next time    
+        QS = false;                      // reset the Quantified Self flag or next time    
   }
   ledFadeToBeat();                      // Makes the LED Fade Effect Happen 
+  //***********************************
+
+  //touch sensor***********************
+  touch_result = (digitalRead(touchpin1)||digitalRead(touchpin2)||digitalRead(touchpin3)); // touchresult is 0 only in case that all touch data is zero
+  
   //***********************************
   WaitSignal = Serial.parseInt();
   if(WaitSignal == 1) // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked
@@ -97,6 +112,7 @@ void loop(){
     Serial.println(fir);
     Serial.println(distance);
     Serial.println(BPM);
+    Serial.println(touch_result);
 }
  
 void ledFadeToBeat(){
@@ -104,4 +120,3 @@ void ledFadeToBeat(){
     fadeRate = constrain(fadeRate,0,255);   //  keep LED fade value from going into negative numbers!
     analogWrite(fadePin,fadeRate);          //  fade LED
   }
-
