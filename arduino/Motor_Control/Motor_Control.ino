@@ -7,7 +7,7 @@
 #define BRAKE 8 // 모터드라이버 -> 릴레이, LOW: Brake 해제 / HIGH: Brake
 #define DIR 7 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
 #define SPEED 5 // 모터드라이버, PWM을 통한 모터 속도제어
-#define gear_ratio 0.09 // 스티어링과 엔코더의 기어비 (58/25)*(15/360)
+#define gear_ratio 0.18 // 스티어링과 엔코더의 기어비 (108/25)*(15/360) {2조}
 
 /* 브레이크 모터 부분 */
 #define brk_DIR 13 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
@@ -22,6 +22,7 @@ int break_order = 0;
 
 double steer_angle; // 회전시키고자 하는 스티어링 각도
 double degree; // 회전시키고자 하는 엔코더 각도
+/*모터 -> 스티어링 -> 엔코더*/
 
 /* Encoder Value 초기화 */
 int encoderVal = 0; 
@@ -59,7 +60,7 @@ void loop() {
   /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
   get_data();
 
-  steer_angle = wheel_angle * 13 ; // 스티어링 각도와 조향 각도의 비 13 : 1
+  steer_angle = wheel_angle * 13.5 ; // 스티어링 각도와 조향 각도의 비 13.5 : 1
   degree = steer_angle * gear_ratio;
 
   int change = getEncoderTurn(); // encoder 각도 변화량
@@ -171,9 +172,9 @@ void control(int degree, int &encoderVal){
       mt_ctrl_cnt=0;
       break;
     }
-   else if(encoderVal >= 50 || encoderVal <= -50 ){
+   else if(encoderVal >= 102 || encoderVal <= -102 ){
       digitalWrite(BRAKE,HIGH);
-      if(encoderVal >= 50){
+      if(encoderVal >= 102){
         encoderVal = encoderVal - 1;
         mt_ctrl_cnt++;
       }
@@ -185,7 +186,7 @@ void control(int degree, int &encoderVal){
     }
     
     if(mt_ctrl_cnt == 1){
-      if(encoderVal == 50-mt_ctrl_cnt){;}
+      if(encoderVal == 102-mt_ctrl_cnt){;}
       else{
       //Serial.println(mt_ctrl_cnt);
       encoderVal = encoderVal + mt_ctrl_cnt;
@@ -193,7 +194,7 @@ void control(int degree, int &encoderVal){
       }
      }
      else if(mt_ctrl_cnt== -1){
-      if(encoderVal == -50 - mt_ctrl_cnt){;}
+      if(encoderVal == -102 - mt_ctrl_cnt){;}
       else{
       //Serial.println(mt_ctrl_cnt);
       encoderVal = encoderVal + mt_ctrl_cnt;
