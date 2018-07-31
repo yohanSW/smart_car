@@ -5,13 +5,14 @@ import sense
 
 GPIO.setmode(GPIO.BOARD)
 pin = 11 #LED pin number
+NoTouchStack = 0
 #ser = serial.Serial("/dev/ttyACM0",115200)
 GPIO.setup(pin,GPIO.OUT)
 
 
 while True :
     
-    impact, fire, sona, heartpulse  = sense.sensing()
+    impact, fire, sona, heartpulse, touchresult  = sense.sensing()
     '''if fire == -1 :
         continue'''
     try:
@@ -32,6 +33,18 @@ while True :
             if impact >= 400 and ( sona <= 10 or sona >= 4000 ) : ##sona data occasionally measured as 2000~2500 without any reason.
                 print("Car crush has been happened")
                 Accident = 1
+                
+            if touchresult = 0 :
+                NoTouchStack = NoTouchStack + 1
+                if NoTouchStack == 3 :
+                    ##Auto driving must be started!!
+                    print("Driver can't handle the car. Start the Auto Driving Mode")
+                    NoTouchStack = 0
+            else
+                NoTouchStack = 0
+                    
+            
+            
 
 
             if Accident == 1 : # if Accident happend,
