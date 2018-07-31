@@ -4,10 +4,15 @@ import time
 import sense
 
 GPIO.setmode(GPIO.BOARD)
-pin = 11 #LED pin number
+pin = 11 #LED pin 
+BrakeControl = 13 #Brake control pin number ( In Arduino , pin 10 )
+ClutchAlarm = 15 #Clutch Alarm to Arduino ( In Arduino, pin 9 )
+ClutchControl = 16 #Clutch control pin number
 NoTouchStack = 0
 #ser = serial.Serial("/dev/ttyACM0",115200)
 GPIO.setup(pin,GPIO.OUT)
+GPIO.setup(BrakeControl,GPIO.OUT)
+GPIO.setup(ClutchAlarm,GPIO.OUT)
 
 
 while True :
@@ -23,10 +28,13 @@ while True :
             if  (heartpulse <=180 and heartpulse >= 130) or heartpulse <=30 : ##normal heartpulse is between 49 ~ 90
                 print("Driver is under heart attack")
                 #if heart attack has been happend, Auto driving must be started!!
+                GPIO.output(ClutchControl,True) ##Auto Driving start
+                GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
                 Accident = 1
 
             if fire >= 600 : ##fire signal is measured as analog, if it is over 500, then there are fire around sensor.
                 print("Fire Fire Fire")
+                GPIO.output(BrakeControl,True) ##if the car is on fire, car must be stopped
                 Accident = 1
 
 
@@ -37,7 +45,8 @@ while True :
             if touchresult = 0 :
                 NoTouchStack = NoTouchStack + 1
                 if NoTouchStack == 3 :
-                    ##Auto driving must be started!!
+                    GPIO.output(ClutchControl,True) ##Auto Driving start
+                    GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
                     print("Driver can't handle the car. Start the Auto Driving Mode")
                     NoTouchStack = 0
             else
@@ -75,6 +84,9 @@ while True :
                 #GPIO.cleanup()
                 break
             else:
+                GPIO.output(ClutchControl,False) ##if there is no accident, clutch is off
+                GPIO.output(ClutchAlarm,False)
+                GPIO.output(BrakeControl,False) ##if there is no accident, brake is off
                 break
     except Exception as e:
         print(e)
