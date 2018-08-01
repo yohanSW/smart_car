@@ -22,18 +22,7 @@
 
 import time
 import subprocess
-import RPi.GPIO as GPIO
 from twython import Twython
-
-#setup GPIO using Broadcom SOC channel numbering
-GPIO.setmode(GPIO.BCM)
-BUTTON = 12 
-SYSTEM_READY = 26 # indicates that program is ready to be run
-SYSTEM_RUNNING = 13 # indicates that program is running
-
-GPIO.setup(SYSTEM_READY, GPIO.OUT) 
-GPIO.setup(SYSTEM_RUNNING, GPIO.OUT) 
-GPIO.setup(BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 IMG_WIDTH = "1280"
 IMG_HEIGHT = "720"
@@ -50,18 +39,8 @@ snapCommand = "raspistill -w " + IMG_WIDTH +  " -h " + IMG_HEIGHT + " -o " + IMG
 
 api = Twython(apiKey,apiSecret,accessToken,accessTokenSecret)
 
-GPIO.output(SYSTEM_READY, True) # set ready LED to on
-GPIO.output(SYSTEM_RUNNING, False) # working LED to off
-print("System Ready - push button to take picture and tweet.\n")
-
-try:
-	while True:
-
-		GPIO.wait_for_edge(BUTTON, GPIO.RISING)
-		print("Program running...\n")
-		GPIO.output(SYSTEM_READY, False) # signal program not ready
-		GPIO.output(SYSTEM_RUNNING, True) 
-
+def twit_upload():
+    try:
 		print("Capturing photo...\n")
 		ret = subprocess.call(snapCommand, shell=True)
 		photo = open(IMG_NAME, 'rb')
@@ -79,13 +58,10 @@ try:
 		#deprecated method replaced by upload_media() and update_status()
 		#api.update_status_with_media(media=photo, status=tweetStr)
 
-		GPIO.output(SYSTEM_RUNNING, False) 
-		GPIO.output(SYSTEM_READY, True) # signal program ready
 		print("Done - System ready again.\n")
 
-except KeyboardInterrupt:
-	GPIO.output(SYSTEM_READY_LED,False)
-	GPIO.cleanup()
-
-finally:
-    GPIO.cleanup()
+if __name__ == '__main__':
+    try:
+        twit_upload()
+    except KeyboardInterrupt:
+        destroy()
