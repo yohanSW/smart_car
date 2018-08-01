@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*--
+# -*- coding: utf-8 -*-
 # Make Command line like this!
 # python3 something.py image_name.png 'What you want to say'
 # python3 post_image.py high_resolution_image.png 'Checkout this cool image!'
