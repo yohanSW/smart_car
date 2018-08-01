@@ -23,7 +23,6 @@ def main():
         if GPIO.input(auto_driving_switch)==1:
             GPIO.output(ClutchControl,True) ##Auto Driving start
             GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
-            GPIO.output(BrakeControl,False) ##if the car is on fire, car must be stopped
         elif GPIO.input(new_tech_switch)==1:
             new_tech()
         else
