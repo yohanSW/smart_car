@@ -1,3 +1,4 @@
+/* 3조 모터컨트롤 코드*/
 /* 엔코더 부분 */
 #define clpin 4 // 엔코더, 클락핀
 #define dtpin 11 // 엔코더, 데이타핀
@@ -7,7 +8,8 @@
 #define BRAKE 8 // 모터드라이버 -> 릴레이, LOW: Brake 해제 / HIGH: Brake
 #define DIR 7 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
 #define SPEED 5 // 모터드라이버, PWM을 통한 모터 속도제어
-#define gear_ratio 0.18 // 스티어링과 엔코더의 기어비 (108/25)*(15/360) {2조}
+#define gear_ratio 0.162 // 스티어링과 엔코더의 기어비 (73/25)*(20/360) {3조}
+//#define gear_ratio 0.18 // 스티어링과 엔코더의 기어비 (108/25)*(15/360) {2조}
 
 /* 브레이크 모터 부분 */
 #define brk_DIR 13 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
@@ -19,6 +21,8 @@
 #define auto_STOP 10
 int is_driving = 0;
 int break_order = 0;
+int encoder_boundary = 80; // {3조}
+int encoder_boundary = 102; // {2조}
 
 double steer_angle; // 회전시키고자 하는 스티어링 각도
 double degree; // 회전시키고자 하는 엔코더 각도
@@ -60,7 +64,7 @@ void loop() {
   /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
   get_data();
 
-  steer_angle = wheel_angle * 13.5 ; // 스티어링 각도와 조향 각도의 비 13.5 : 1
+  steer_angle = wheel_angle * 13 ; // 스티어링 각도와 조향 각도의 비 13 : 1
   degree = steer_angle * gear_ratio;
 
   if(is_driving != 0){
@@ -71,6 +75,7 @@ void loop() {
     encoderVal = encoderVal + getEncoderTurn(); // encoder 각도 갱신
     digitalWrite(BRAKE,HIGH);
   }
+    
 } // loop문 괄호
 
 
@@ -78,9 +83,11 @@ void get_data(){
     /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
   while(true) 
   {
-    //is_driving = digitalRead(auto_DRI);
-    is_driving = 1;
+    
+    //is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
+    is_driving = 1;              
     break_order = digitalRead(auto_STOP);
+    
     if(Serial.available())
     {
       if(Serial.find('#'))
@@ -92,7 +99,9 @@ void get_data(){
         is_break = Serial.parseInt();
         if(is_break == 1 || break_order ==1)
           is_break = 1;
-        Serial.print(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
+        Serial.print("wheel_angle : ");
+        Serial.println(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
+        
       }
       else
         continue;
@@ -109,7 +118,7 @@ void break_mode(){
     digitalWrite(brk_DIR,LOW); // 항상 CW방향으로 회전
     digitalWrite(brk_BRAKE,HIGH); //정지 동작을 위해 브레이크 모터 고정 해제   
     digitalWrite(brk_SPEED,255);   
-    delay(1500); // 5초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
+    delay(1500); // 1.5초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
     digitalWrite(brk_BRAKE,LOW); // 차량 브레이크가 당겨진 상태로 고정
     is_breakING = 1; //브레이크모터가 동작중인데 loop를 돌아 중복하여 브레이크모터 동작 방지
   }
@@ -152,12 +161,14 @@ void control(int degree){
   /* 엔코더 조향각이 바뀔 때마다 steer_angle입력을 막기 위해 while문 추가*/
   while(1)
   {
-    int change = getEncoderTurn(); // encoder 각도 변화량
+    
+   int change = getEncoderTurn(); // encoder 각도 변화량
     encoderVal = encoderVal + change; // encoder 각도 갱신
     /* encoder 각도계산 종료시 초기화, 자율주행 종료시 switch OFF */
     if (digitalRead(swpin) == LOW)
       encoderVal = 0;
 
+    Serial.print("encoderVal : ");  
     Serial.println(encoderVal);
     digitalWrite(BRAKE,LOW); // 모터동작을 시작하기 위해 브레이크 해제
     if (encoderVal <= degree) // 방향 제어
@@ -173,9 +184,9 @@ void control(int degree){
       mt_ctrl_cnt=0;
       break;
     }
-   else if(encoderVal >= 102 || encoderVal <= -102 ){
+   else if(encoderVal >= encoder_boundary || encoderVal <= -encoder_boundary ){
       digitalWrite(BRAKE,HIGH);
-      if(encoderVal >= 102){
+      if(encoderVal >= encoder_boundary){
         encoderVal = encoderVal - 1;
         mt_ctrl_cnt++;
       }
@@ -187,7 +198,7 @@ void control(int degree){
     }
     
     if(mt_ctrl_cnt == 1){
-      if(encoderVal == 102-mt_ctrl_cnt){;}
+      if(encoderVal == encoder_boundary-mt_ctrl_cnt){;}
       else{
       //Serial.println(mt_ctrl_cnt);
       encoderVal = encoderVal + mt_ctrl_cnt;
@@ -195,7 +206,7 @@ void control(int degree){
       }
      }
      else if(mt_ctrl_cnt== -1){
-      if(encoderVal == -102 - mt_ctrl_cnt){;}
+      if(encoderVal == -encoder_boundary - mt_ctrl_cnt){;}
       else{
       //Serial.println(mt_ctrl_cnt);
       encoderVal = encoderVal + mt_ctrl_cnt;
