@@ -156,7 +156,7 @@ def image_processing(img):
         This will return [[ [rho, theta], ... ]]
     '''
     edge_image_for_line = edge_image[int((SCREEN_HEIGHT/2)):SCREEN_HEIGHT, 0:SCREEN_WIDTH].copy()
-    lines = cv2.HoughLines(edge_image, 1, np.pi/180, 100)
+    lines = cv2.HoughLines(edge_image_for_line, 1, np.pi/180, 100)
     sum_of_rho = 0
     sum_of_theta = 0
     cnt = 0
