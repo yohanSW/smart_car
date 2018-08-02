@@ -2,7 +2,8 @@ import serial
 import RPi.GPIO as GPIO
 import time
 import sense
-
+import gps_detect
+import subprocess
 GPIO.setmode(GPIO.BOARD)
 pin = 11 #LED pin 
 BrakeControl = 13 #Brake control pin number ( In Arduino , pin 10 )
@@ -46,18 +47,21 @@ def new_tech():
                 Accident = 0
                 
                 if  (heartpulse <=180 and heartpulse >= 130) or heartpulse <=30 : ##normal heartpulse is between 49 ~ 90
-                    print("Driver is under heart attack")
+                    com_alarm = "'Driver is under heart attack'"
+                    print(com_alarm)
                     #if heart attack has been happend, Auto driving must be started!!
                     GPIO.output(ClutchControl,True) ##Auto Driving start
                     GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
                     Accident = 1
                 if fire >= 600 : ##fire signal is measured as analog, if it is over 500, then there are fire around sensor.
-                    print("Fire Fire Fire")
+                    com_alarm = "'Fire Fire Fire'"
+                    print(com_alarm)
                     GPIO.output(BrakeControl,True) ##if the car is on fire, car must be stopped
-                    Accident = 1
+                    Accident = 2
                 if impact >= 400 and ( sona <= 10 or sona >= 4000 ) : ##sona data occasionally measured as 2000~2500 without any reason.
-                    print("Car crush has been happened")
-                    Accident = 1
+                    com_alarm = "'Car crush has been happened'"
+                    print(com_alarm)
+                    Accident = 3
 
                 if touchresult == 0 :
                     NoTouchStack = NoTouchStack + 1
@@ -71,13 +75,16 @@ def new_tech():
 
 
                 ###########################################################################################################        
-                if Accident == 1 : # if Accident happend,
+                if Accident > 0 : # if Accident happend,
                     sense.WaitSignal()
                     ##gpsx, gpsy = gps() # GPS signal is transmitted
-                    ####make code here!
+                    gps_detect()
                     ##upload twitter
                     ####make code here!
                     led_sos()
+
+                    str_com ="python3 post_image.py high_resolution_image.png " + com_alarm
+                    os.subprocess.check_output(str_com,shell=True)
                     break
                 else:
                     GPIO.output(ClutchControl,False) ##if there is no accident, clutch is off

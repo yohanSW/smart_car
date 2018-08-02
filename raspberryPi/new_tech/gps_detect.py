@@ -110,7 +110,7 @@ class GoogleMapDownloader:
 
         return map_img
 
-def main():
+def gps_detect():
     #Receive GPS Data from Adafruit BreakOut Sensor
     getcontext().prec = 8
     fix = 0
@@ -172,4 +172,4 @@ def main():
         print("The map has successfully been created")
 #"revised"
 
-if __name__ == '__main__':  main()
+if __name__ == '__main__':  gps_detect()
