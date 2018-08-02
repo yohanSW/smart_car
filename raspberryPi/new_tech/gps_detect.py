@@ -110,12 +110,12 @@ class GoogleMapDownloader:
 
         return map_img
 
-def gps_detect():
+def main():
     #Receive GPS Data from Adafruit BreakOut Sensor
     getcontext().prec = 8
     fix = 0
     gps_con = 0
-    lan = 0
+    lat = 0
     lng = 0
 
     while  True:
@@ -145,6 +145,10 @@ def gps_detect():
          lng = int(gps[30:33]) + (Decimal(int(gps[33:35]))/(Decimal(60))) + (Decimal(int(gps[36:40]))/(Decimal(360000)))
          if gps[41:42] == "W":
             lng = 0 - lng
+         print(type(lat))
+         print(type(lng))
+         lat = float(lat)
+         lng = float(lng)
          print ("LAT:" ,lat)
          print ("lng:",lng)
         if gps[1 : 6] == "GPRMC" and fix > 1:
@@ -157,7 +161,7 @@ def gps_detect():
             break
 
      # Create a new instance of GoogleMap Downloader
-    gmd = GoogleMapDownloader(lat, lng, 18)
+    gmd = GoogleMapDownloader(lat-0.0038, lng-0.0108, 18)
 
     print("The tile coorindates are {}".format(gmd.getXY()))
 
@@ -172,4 +176,4 @@ def gps_detect():
         print("The map has successfully been created")
 #"revised"
 
-if __name__ == '__main__':  gps_detect()
+if __name__ == '__main__':  main()
