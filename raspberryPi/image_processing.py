@@ -106,7 +106,7 @@ def image_processing(img):
     '''
         About lane, we should use canny edge detection algorithm
     '''
-    edge_image = cv2.Canny(crop_image, 150, 250, apertureSize=3)
+    edge_image = cv2.Canny(crop_image, 150, 300, apertureSize=3)
 
     ########################<Stop Line>############################################################
     '''
@@ -155,32 +155,16 @@ def image_processing(img):
         Detecting lane using Hough-Transform
         This will return [[ [rho, theta], ... ]]
     '''
-    lines = cv2.HoughLines(edge_image, 1, np.pi/180, 100)
+    edge_image_for_line = edge_image[int((SCREEN_HEIGHT/2)):SCREEN_HEIGHT, 0:SCREEN_WIDTH].copy()
+    lines = cv2.HoughLines(edge_image_for_line, 1, np.pi/180, 100)
     sum_of_rho = 0
     sum_of_theta = 0
     cnt = 0
     try:
-        #print(lines)
-        #print(lines[5][0][0])
-        #print(lines[5][0][1])
-        #(31, 1, 2)
-        #[[[31, 24]], [[22, 44]], ...]
         if lines is not None:
             for i in range(len(lines[0])):
                 sum_of_rho += lines[0][0][0]
                 sum_of_theta += lines[0][0][1]
-            '''
-            while True:
-                try:
-                    sum_of_rho += lines[cnt][0][0]
-                    sum_of_theta += lines[cnt][0][1]
-                    cnt += 1
-                except:
-                    cnt -= 1
-                    break
-            avg_rho = sum_of_rho / float(cnt)
-            avg_theta = sum_of_theta / float(cnt)
-            '''
             avg_rho = sum_of_rho / len(lines[0])
             avg_theta = sum_of_theta / len(lines[0])
             angle = math.atan(float(SCREEN_HEIGHT)/(float(SCREEN_WIDTH/2) - (avg_rho)/math.cos(avg_theta))) * (180.0 / math.pi)
@@ -192,7 +176,7 @@ def image_processing(img):
             '''
                 Exception Handling : Early stop line detection -> just go forward!!
             '''
-            if math.fabs(avg_theta * (180.0) / math.pi) > 72 and math.fabs(avg_theta * (180.0) / math.pi) < 108 and math.fabs(avg_rho) < (SCREEN_HEIGHT/2) and stop_status_line == False:
+            if math.fabs(avg_theta * (180.0) / math.pi) > 80 and math.fabs(avg_theta * (180.0) / math.pi) < 100 and math.fabs(avg_rho) < (SCREEN_HEIGHT/2) and stop_status_line == False:
                 cv2.line(crop_image, (320, 480), (320, 0), (255, 0, 255), 5)
                 stop_status_line = False
                 angle = 0.0

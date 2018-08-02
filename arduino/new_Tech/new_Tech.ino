@@ -1,3 +1,5 @@
+#include <CapacitiveSensor.h>
+
 #define PROCESSING_VISUALIZER 1
 #define SERIAL_PLOTTER  2
 
@@ -23,10 +25,8 @@ int firePin = A2;
 int fir = 0;
 
 //Touch sensor*******************
-int touchpin1 = 2;
-int touchpin2 = 4;
-int touchpin3 = 7;
 int touch_result;
+CapacitiveSensor   cs_4_2 = CapacitiveSensor(4,2);        // 10M resistor between pins 4 & 2, pin 2 is sensor pin, add a wire and or foil if desired
 
 //***********************************
  
@@ -53,9 +53,7 @@ void setup(){
 //   analogReference(EXTERNAL);   
   pinMode(Echo_Pin, INPUT);
   pinMode(Trig_Pin, OUTPUT);
-  pinMode(touchpin1, INPUT);
-  pinMode(touchpin2, INPUT);
-  pinMode(touchpin3, INPUT);
+  cs_4_2.set_CS_AutocaL_Millis(0xFFFFFFFF);
 }
  
  
@@ -99,8 +97,18 @@ void loop(){
   //***********************************
 
   //touch sensor***********************
-  touch_result = (digitalRead(touchpin1)||digitalRead(touchpin2)||digitalRead(touchpin3)); // touchresult is 0 only in case that all touch data is zero
-  
+  long start = millis();
+  long touch =  cs_4_2.capacitiveSensor(500);
+  if(touch>=300)
+  {
+    touch_result = 1;
+  }
+  else
+  {
+    touch_result = 0;
+  }
+  //Serial.print(millis() - start);        // check on performance in milliseconds
+  //Serial.print("\t");                    // tab character for debug windown spacing
   //***********************************
   WaitSignal = Serial.parseInt();
   if(WaitSignal == 1) // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked
