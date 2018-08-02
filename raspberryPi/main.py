@@ -58,7 +58,7 @@ def main():
             continue
         elif isNotFoundAngle == image_cnt:
             #print 'Cannot detect line...'
-            cw.stop()
+            #cw.stop()
             continue
         else :
             #print 'Movement'
