@@ -65,7 +65,7 @@ def new_tech():
 
                 if touchresult == 0 :
                     NoTouchStack = NoTouchStack + 1
-                    if NoTouchStack == 3 :
+                    if NoTouchStack == 2 :
                         GPIO.output(ClutchControl,True) ##Auto Driving start
                         GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
                         print("Driver can't handle the car. Start the Auto Driving Mode")
