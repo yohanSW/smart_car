@@ -79,17 +79,17 @@ def new_tech():
                     sense.WaitSignal()
                     ##gpsx, gpsy = gps() # GPS signal is transmitted
                     str_com_1 = sudo systemctl stop gpsd.socket
-		    str_com_2 = sudo systemctl disable gpsd.socket
-		    str_com_3 = sudo systemctl enable gpsd.socket
-		    str_com_4 = sudo systemctl start gpsd.socket
-		    str_com_5 = sudo gpsd /dev/ttyS0 -F /var/run/gpsd.sock
-		    os.subprocess.check_output(str_com_1,shell=True)
-		    os.subprocess.check_output(str_com_2,shell=True)
-		    os.subprocess.check_output(str_com_3,shell=True)
-		    os.subprocess.check_output(str_com_4,shell=True)
-		    os.subprocess.check_output(str_com_5,shell=True)
+                    str_com_2 = sudo systemctl disable gpsd.socket
+                    str_com_3 = sudo systemctl enable gpsd.socket
+                    str_com_4 = sudo systemctl start gpsd.socket
+                    str_com_5 = sudo gpsd /dev/ttyS0 -F /var/run/gpsd.sock
+                    os.subprocess.check_output(str_com_1,shell=True)
+                    os.subprocess.check_output(str_com_2,shell=True)
+                    os.subprocess.check_output(str_com_3,shell=True)
+                    os.subprocess.check_output(str_com_4,shell=True)
+                    os.subprocess.check_output(str_com_5,shell=True)
 
-		    gps_detect()
+                    gps_detect()
                     ##upload twitter
                     ####make code here!
                     led_sos()
