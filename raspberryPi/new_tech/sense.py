@@ -15,11 +15,11 @@ def ClutchControl():
     print("Auto driving is started")
 
 def ClutchAlarm():
-    ser.wrtie(str.encode('A')) #A is clutch Alarm
+    ser.write(str.encode('A')) #A is clutch Alarm
     print("Clutch signal is transmitted to Motor Control Arduino")
 
 def AllNormal():
-    ser.wrtie(str.encode('N')) #N is Normal
+    ser.write(str.encode('N')) #N is Normal
     print("All state is normal, manual driving is started again")
 
 def sensing():
