@@ -20,11 +20,7 @@ import urllib.request
 from PIL import Image
 import os
 import math
-import time 
-
 from decimal import *
-
-start_time = time.time()
 
 class GoogleMapDownloader:
     """
@@ -139,30 +135,30 @@ def main():
           print("TEST:", gps[1:6])
           
         if gps[1 : 6] == "GPGGA":
-         gps1 = gps.split(',',14)
+          gps1 = gps.split(',',14)
         if gps[1 : 6] == "GPGSA":
-         fix = int(gps[9:10])
+          fix = int(gps[9:10])
         if gps[1 : 6] == "GPGGA" and len(gps) > 68 and (gps1[3] == "N" or gps1[3] == "S")and fix > 1:
-         lat = int(gps[18:20]) + (Decimal(int(gps[20:22]))/(Decimal(60))) + (Decimal(int(gps[23:27]))/(Decimal(360000)))
-         if gps[28:29] == "S":
+          lat = int(gps[18:20]) + (Decimal(int(gps[20:22]))/(Decimal(60))) + (Decimal(int(gps[23:27]))/(Decimal(360000)))
+          if gps[28:29] == "S":
             lat = 0 - lat
-         lng = int(gps[30:33]) + (Decimal(int(gps[33:35]))/(Decimal(60))) + (Decimal(int(gps[36:40]))/(Decimal(360000)))
-         if gps[41:42] == "W":
+          lng = int(gps[30:33]) + (Decimal(int(gps[33:35]))/(Decimal(60))) + (Decimal(int(gps[36:40]))/(Decimal(360000)))
+          if gps[41:42] == "W":
             lng = 0 - lng
-         print(type(lat))
-         print(type(lng))
-         lat = float(lat)
-         lng = float(lng)
-         print ("LAT:" ,lat)
-         print ("lng:",lng)
+        print(type(lat))
+        print(type(lng))
+        lat = float(lat)
+        lng = float(lng)
+        print ("LAT:" ,lat)
+        print ("lng:",lng)
         if gps[1 : 6] == "GPRMC" and fix > 1:
-         gps2 = gps.split(',',14)
-         print ("SPEED:",gps2[7])
-         print ("ANGLE:",gps2[8])
+          gps2 = gps.split(',',14)
+          print ("SPEED:",gps2[7])
+          print ("ANGLE:",gps2[8])
          #print ("")
         if lat > 30 and lng > 120 :
-            print("Get the right lan and lon")
-            break
+          print("Get the right lan and lon")
+          break
 
      # Create a new instance of GoogleMap Downloader
     gmd = GoogleMapDownloader(lat-0.0038, lng-0.0108, 18)
@@ -178,7 +174,7 @@ def main():
         # Save the image to disk
         img.save("high_resolution_image.png")
         print("The map has successfully been created")
-        print("--- %s seconds ---" %(time.time() - start_time))
 #"revised"
 
-if __name__ == '__main__':  main()
+if __name__ == '__main__':
+    main()
