@@ -20,7 +20,11 @@ import urllib.request
 from PIL import Image
 import os
 import math
+import time 
+
 from decimal import *
+
+start_time = time.time()
 
 class GoogleMapDownloader:
     """
@@ -174,6 +178,7 @@ def main():
         # Save the image to disk
         img.save("high_resolution_image.png")
         print("The map has successfully been created")
+        print("--- %s seconds ---" %(time.time() - start_time))
 #"revised"
 
 if __name__ == '__main__':  main()
