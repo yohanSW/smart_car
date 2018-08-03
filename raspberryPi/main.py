@@ -6,6 +6,9 @@ import numpy as np
 import cv2
 #*********************************************************************************
 img = cv2.VideoCapture(0)
+img.set(cv2.CAP_PROP_FRAME_WIDTH,1280);
+img.set(cv2.CAP_PROP_FRAME_HEIGHT,720);
+img.set(cv2.CAP_PROP_FPS, 30);
 # Show image captured by camera, True to turn on, you will need #DISPLAY and it also slows the speed of tracking
 show_image_enable   = False
 draw_circle_enable  = True
