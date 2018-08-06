@@ -21,9 +21,10 @@ GPIO.setup(auto_driving_switch , GPIO.IN)
 GPIO.setup(new_tech_switch , GPIO.IN)
 
 def main():
-    print "main code start!"
+    print ("main code start!")
+    new_tech()
     while True :
-        if GPIO.input(auto_driving_switch)==1:
+        '''if GPIO.input(auto_driving_switch)==1:
             sense.ClutchControl()
             sense.ClutchAlarm()
             #sense.BrakeControl()
@@ -32,11 +33,11 @@ def main():
             #GPIO.output(BrakeControl,False) ##if the car is on fire, car must be stopped
         elif GPIO.input(new_tech_switch)==1:
             new_tech()
-        else:
+        else
             sense.AllNormal()
             #GPIO.output(ClutchControl,False) ##Auto Driving start
             #GPIO.output(ClutchAlarm,False) ##Alarm to Arduino that Clutch is on signal
-            #GPIO.output(BrakeControl,False) ##if the car is on fire, car must be stopped
+            #GPIO.output(BrakeControl,False) ##if the car is on fire, car must be stopped'''
 
 
 
@@ -49,9 +50,11 @@ def new_tech():
         try:
             while True :
                 global NoTouchStack
+                global com_alarm
+                com_alarm = "''"
                 Accident = 0
                 
-                if  (heartpulse <=180 and heartpulse >= 130) or heartpulse <=30 : ##normal heartpulse is between 49 ~ 90
+                if  (heartpulse <=180 and heartpulse >= 130) : ##normal heartpulse is between 49 ~ 90
                     com_alarm = "'Driver is under heart attack'"
                     print(com_alarm)
                     #if heart attack has been happend, Auto driving must be started!!
@@ -81,15 +84,16 @@ def new_tech():
                         print("Driver can't handle the car. Start the Auto Driving Mode")
                         Accident = 4
                         NoTouchStack = 0
-                else:
+                else :
                     NoTouchStack = 0
 
 
                 ###########################################################################################################        
                 if Accident > 0 : # if Accident happend,
                     sense.WaitSignal()
+                    led_sos()
                     ##gpsx, gpsy = gps() # GPS signal is transmitted
-                    str_com_1 = "sudo systemctl stop gpsd.socket"
+                    '''str_com_1 = "sudo systemctl stop gpsd.socket"
                     str_com_2 = "sudo systemctl disable gpsd.socket"
                     str_com_3 = "sudo systemctl enable gpsd.socket"
                     str_com_4 = "sudo systemctl start gpsd.socket"
@@ -102,19 +106,22 @@ def new_tech():
                     print("GPS detection started")
                     
                     #gps_detect()
-                    str_com_6 = "sudo python3 gps_detected.py"
+                    str_com_6 = "sudo python3 gps_detect.py"
                     subprocess.check_output(str_com_6,shell=True)
                     print("GPS detection finished and Map was downloaded on the folder")
                     ##upload twitter
                     ####make code here!
-                    led_sos()
                     
+                    print(com_alarm)
+                    lattitude = gps_detect.lat
+                    longitude = gps_detect.lng
+                    print(lattitude)
+                    print(longitude)
                     print("Image is uploaded on twit")
                     str_com ="python3 post_image.py high_resolution_image.png " + com_alarm
                     subprocess.check_output(str_com,shell=True)
-                    print("Image upload is finished")
-                    break
-                else:
+                    print("Image upload is finished")'''
+                else :
                     sense.AllNormal()
                     #GPIO.output(ClutchControl,False) ##if there is no accident, clutch is off
                     #GPIO.output(ClutchAlarm,False)
@@ -155,3 +162,4 @@ if __name__ == '__main__':
         main()
     except KeyboardInterrupt:
         destroy()
+
