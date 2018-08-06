@@ -1,7 +1,6 @@
 import serial
 
 ser = serial.Serial("/dev/ttyACM0",115200)
-
 def WaitSignal():
     ser.write(str.encode('W')) #W is Wait
     print("SOS Signal Activated")
@@ -21,6 +20,9 @@ def ClutchAlarm():
 def AllNormal():
     ser.write(str.encode('N')) #N is Normal
     print("All state is normal, manual driving is started again")
+    
+def GoSignal():
+    ser.write(str.encode('G'))
 
 def sensing():
     ##print('c')
