@@ -44,6 +44,7 @@ def main():
 
 def new_tech():
     while True : 
+        sense.GoSignal()
         impact, fire, sona, heartpulse, touchresult  = sense.sensing()
         '''if fire == -1 :
             continue'''
@@ -121,6 +122,7 @@ def new_tech():
                     str_com ="python3 post_image.py high_resolution_image.png " + com_alarm
                     subprocess.check_output(str_com,shell=True)
                     print("Image upload is finished")'''
+                    break
                 else :
                     sense.AllNormal()
                     #GPIO.output(ClutchControl,False) ##if there is no accident, clutch is off
