@@ -1,4 +1,4 @@
-import serial
+import serial 
 import RPi.GPIO as GPIO
 import time
 import sense
@@ -22,9 +22,9 @@ GPIO.setup(new_tech_switch , GPIO.IN)
 
 def main():
     print ("main code start!")
-    new_tech()
+    #new_tech()
     while True :
-        '''if GPIO.input(auto_driving_switch)==1:
+        if GPIO.input(auto_driving_switch)==1:
             sense.ClutchControl()
             sense.ClutchAlarm()
             #sense.BrakeControl()
@@ -37,7 +37,7 @@ def main():
             sense.AllNormal()
             #GPIO.output(ClutchControl,False) ##Auto Driving start
             #GPIO.output(ClutchAlarm,False) ##Alarm to Arduino that Clutch is on signal
-            #GPIO.output(BrakeControl,False) ##if the car is on fire, car must be stopped'''
+            #GPIO.output(BrakeControl,False) ##if the car is on fire, car must be stopped
 
 
 
