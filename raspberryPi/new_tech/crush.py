@@ -96,7 +96,7 @@ def new_tech():
                     sense.WaitSignal()
                     led_sos()
                     ##gpsx, gpsy = gps() # GPS signal is transmitted
-                    '''str_com_1 = "sudo systemctl stop gpsd.socket"
+                    str_com_1 = "sudo systemctl stop gpsd.socket"
                     str_com_2 = "sudo systemctl disable gpsd.socket"
                     str_com_3 = "sudo systemctl enable gpsd.socket"
                     str_com_4 = "sudo systemctl start gpsd.socket"
@@ -123,7 +123,7 @@ def new_tech():
                     print("Image is uploaded on twit")
                     str_com ="python3 post_image.py high_resolution_image.png " + com_alarm
                     subprocess.check_output(str_com,shell=True)
-                    print("Image upload is finished")'''
+                    print("Image upload is finished")
                     break
                 else :
                     sense.AllNormal()
