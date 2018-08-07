@@ -94,44 +94,29 @@ class GoogleMapDownloader:
 
         # Create a new image of the size require
         map_img = Image.new('RGB', (width, height))
-
-        for x in range(0, tile_width):
-            for y in range(0, tile_height):
-                url = 'https://mt0.google.com/vt?x=' + str(start_x + x) + '&y=' + str(start_y + y) + '&z=' + str(
-                    self._zoom)
-
+        count_x = -1
+        for x in range(-(tile_width)//2, (tile_width//2) +1):
+            count_x+=1
+            count_y = -1
+            for y in range(-(tile_height)//2, (tile_height//2) +1):
+                count_y+=1
+                url = 'https://mt0.google.com/vt?x=' + str(start_x + x) + '&y=' + str(start_y + y) + '&z=' + str(self._zoom)
+                print(url)
                 current_tile = str(x) + '-' + str(y)
+                #print(current_tile)
                 urllib.request.urlretrieve(url, current_tile)
-
                 im = Image.open(current_tile)
-                map_img.paste(im, (x * 256, y * 256))
+                #print(count_x)
+                #print(count_y)
+                map_img.paste(im, (count_x * 256, count_y * 256))
+
+                if(x == 0 and y == 0):
+                    drawing_point_x = count_x
+                    drawing_point_y = count_y
 
                 os.remove(current_tile)
 
-        return map_img
-       
-    def draw_ellipse(self, image, bounds, width=1, outline='white', antialias=4):
-        """Improved ellipse drawing function, based on PIL.ImageDraw."""
-
-        # Use a single channel image (mode='L') as mask.
-        # The size of the mask can be increased relative to the imput image
-        # to get smoother looking results. 
-        mask = Image.new(
-            size=[int(dim * antialias) for dim in image.size],
-            mode='L', color='black')
-        draw = ImageDraw.Draw(mask)
-
-        # draw outer shape in white (color) and inner shape in black (transparent)
-        for offset, fill in (width/-2.0, 'white'), (width/2.0, 'black'):
-            left, top = [(value + offset) * antialias for value in bounds[:2]]
-            right, bottom = [(value - offset) * antialias for value in bounds[2:]]
-            draw.ellipse([left, top, right, bottom], fill=fill)
-
-        # downsample the mask using PIL.Image.LANCZOS 
-        # (a high-quality downsampling filter).
-        mask = mask.resize(image.size, Image.LANCZOS)
-        # paste outline color to input image through the mask
-        image.paste(outline, mask=mask)
+        return map_img, drawing_point_x, drawing_point_y
         
 def main():
     #Receive GPS Data from Adafruit BreakOut Sensor
@@ -190,14 +175,15 @@ def main():
 
     try:
         # Get the high resolution image
-        img = gmd.generateImage()
-        ellipse_box = [465, 465, 815, 815]
+        img, gplot_x, gplot_y = gmd.generateImage()
+        img = img.convert("RGBA")
+        ellipse_box = [gplot_x*256-175, gplot_y*256-175, gplot_x*256+175, gplot_y*256+175]
 
-        # draw a thick white ellipse and a thin black ellipse
-        gmd.draw_ellipse(img, ellipse_box, outline = 'red', width=20)
-        gmd.draw_ellipse(img, ellipse_box, outline='red', width=.5, antialias=8)
-        # draw a thin black line, using higher antialias to preserve finer detail
-        #gmd.draw_ellipse(img, ellipse_box, outline='black', width=.5, antialias=8)       
+        tmp = Image.new('RGBA', img.size, (0,0,0,0))
+        draw=ImageDraw.Draw(tmp)
+        draw.ellipse(ellipse_box,fill=(255,0,0,127))
+        img = Image.alpha_composite(img, tmp)
+        img = img.convert("RGB")     
     except IOError:
         print("Could not generate the image - try adjusting the zoom level and checking your coordinates")
     else:
