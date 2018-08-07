@@ -55,6 +55,7 @@ def new_tech():
                 com_alarm = "''"
                 Accident = 0
                 
+                """
                 if  (heartpulse <=180 and heartpulse >= 130) : ##normal heartpulse is between 49 ~ 90
                     com_alarm = "'Driver is under heart attack'"
                     print(com_alarm)
@@ -64,6 +65,7 @@ def new_tech():
                     #GPIO.output(ClutchControl,True) ##Auto Driving start
                     #GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
                     Accident = 1
+                """
                 if fire >= 600 : ##fire signal is measured as analog, if it is over 500, then there are fire around sensor.
                     com_alarm = "'Fire Fire Fire'"
                     print(com_alarm)
