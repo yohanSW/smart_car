@@ -33,7 +33,7 @@ def main():
             #GPIO.output(BrakeControl,False) ##if the car is on fire, car must be stopped
         elif GPIO.input(new_tech_switch)==1:
             new_tech()
-        else
+        else :
             sense.AllNormal()
             #GPIO.output(ClutchControl,False) ##Auto Driving start
             #GPIO.output(ClutchAlarm,False) ##Alarm to Arduino that Clutch is on signal
