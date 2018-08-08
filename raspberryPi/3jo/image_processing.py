@@ -198,7 +198,7 @@ def image_processing(img):
     if cv2.waitKey(1) & 0xFF == ord('q') :
         print ("interrupt!")
     #return angle, stop_status_line or stop_status_light
-    cv2.imshow('Real World!',crop_image)
+    #cv2.imshow('Real World!',crop_image)
     #cv2.imshow('red', red_hue_image)
     return int(angle), stop_status_line or stop_status_light
 '''
