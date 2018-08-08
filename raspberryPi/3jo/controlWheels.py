@@ -4,7 +4,7 @@ import filedb
 import serial
 
 ser = serial.Serial('/dev/ttyACM0', 115200)
-print "wowowo"
+print ("wowowo")
 Gosignal = 'G'
 
 class ControlWheels(object):
