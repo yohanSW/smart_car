@@ -19,7 +19,7 @@
 #define auto_DRI 9 // 자율주행 여부를 아두이노 신호로 받음  (1 : 자율주행 0 : 수동주행)
 #define auto_STOP 10  //2조 
 int is_driving = 0;
-int encoder_boundary = 84; // {3조}
+int encoder_boundary = 60; // {3조}
 
 double steer_angle; // 회전시키고자 하는 스티어링 각도
 double degree; // 회전시키고자 하는 엔코더 각도
@@ -52,7 +52,7 @@ void setup() {
  digitalWrite (brk_RELEASE , HIGH); // 데이터를 입력받기 전엔 브레이크 모터는 정지상태로 시작
  digitalWrite (swpin, HIGH); // encoder 동작을 위한 switch ON
  digitalWrite (mt_STOP, HIGH); // 데이터를 입력받기 전엔 모터는 정지상태로 시작
- Serial.begin(9600);
+ Serial.begin(115200);
 }
 
 
@@ -184,11 +184,13 @@ void control(int degree){
   /* 엔코더 조향각이 바뀔 때마다 steer_angle입력을 막기 위해 while문 추가*/
   while(1)
   {
+    /*
     get_data();
     
     if(is_brake ==1){
       break;
     }
+    */
     
    int change = getEncoderTurn(); // encoder 각도 변화량
     encoderVal = encoderVal + change; // encoder 각도 갱신
