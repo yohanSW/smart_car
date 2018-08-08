@@ -3,7 +3,7 @@
 import filedb
 import serial
 
-ser = serial.Serial('/dev/ttyACM0', 9600)
+ser = serial.Serial('/dev/ttyACM0', 115200)
 print "wowowo"
 
 class ControlWheels(object):
