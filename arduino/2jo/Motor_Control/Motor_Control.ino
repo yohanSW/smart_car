@@ -183,7 +183,7 @@ void control(int degree){
 
     /* 실제 엔코더의 각도가 원하는 엔코더 각도 범주 안에 들어올 경우 */
     /* 브레이크를 작동하고 while문을 벗어난다 */
-    if ( encoderVal >= degree-2 && encoderVal <= degree+2 ){
+    if ( encoderVal >= degree-1 && encoderVal <= degree+1 ){
       digitalWrite(BRAKE,HIGH);
       mt_ctrl_cnt=0;
       break;
