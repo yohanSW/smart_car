@@ -34,7 +34,7 @@ static int oldB = HIGH;
 /* Serial 통신 초기화 */
 long wheel_angle=0; // 조향각 (바퀴의 각도)
 int minus_sig=1; // 조향각 (바퀴의 각도)
-int is_brake=0; // 차량 운행 정지 여부, 0: 운행 / 1: 정지
+int is_brake = 0; // 차량 운행 정지 여부, 0: 운행 / 1: 정지
 int is_braking = 0; // 브레이크 모터가 동작 중인가? 0: 브레이크모터 동작 X / 1: 브레이크모터 동작 O
 
 void setup() {
@@ -94,9 +94,10 @@ void get_data(){
         wheel_angle=Serial.parseInt();
         if(minus_sig == 0)
           wheel_angle = -wheel_angle;
-     
-        Serial.print("wheel_angle : ");
-        Serial.println(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
+
+        is_brake = Serial.parseInt();
+        //Serial.print("wheel_angle : ");
+        //Serial.println(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
         
       }
       else
@@ -109,6 +110,7 @@ void get_data(){
 }
 
 void brake_mode(){
+  /*
   // 브레이크 잠긴 상태로 신호가 꺼졌을 경우 대비용
   if (is_brake == 2)
   {
@@ -117,35 +119,44 @@ void brake_mode(){
     digitalWrite(brk_SPEED,255);
     delay(700); //브레이크 모터 해제
     digitalWrite(brk_RELEASE,HIGH); // 해체 한 상태로 브레이크 모터 고정
-    is_brakeING = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
+    is_braking = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
     Serial.println(is_brake);
   }
+  */
   if(is_brake == 1 && is_braking == 0) //정지 신호 발생, 그리고 원래 브레이크모터 동작은 없었음
   { 
+    //Serial.println(is_brake);
     digitalWrite(brk_DIR,LOW); // 항상 CW방향으로 회전
     digitalWrite(brk_RELEASE,LOW); //정지 동작을 위해 브레이크 모터 고정 해제   
     digitalWrite(brk_SPEED,255);   
     delay(700); // 1.5초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
     digitalWrite(brk_RELEASE,HIGH); // 차량 브레이크가 당겨진 상태로 고정
-    is_brakeING = 1; //브레이크모터가 동작중인데 loop를 돌아 중복하여 브레이크모터 동작 방지
-    Serial.println(is_brake);
+    is_braking = 1; //브레이크모터가 동작중인데 loop를 돌아 중복하여 브레이크모터 동작 방지
+    //Serial.println(is_brake);
   }
   else if(is_brake ==1 && is_braking == 1) // 여전히 정지 신호 발생, 브레이크 모터는 동작 중
   {
+    //Serial.println("2");
     delay(500);
-    Serial.println(is_brake);
+    //Serial.println(is_brake);
   }
   else if(is_brake == 0 && is_braking == 1) // 브레이크 밟힌 상태, 정지 신호 해제
   {
+    //Serial.println("3");
     digitalWrite(brk_DIR,HIGH); // 당겨진 브레이크 모터 풀어주기 위해 방향 반대로 설정
     digitalWrite(brk_RELEASE,LOW); // 고정된 브레이크 모터 해제
     digitalWrite(brk_SPEED,255);
     delay(700); //브레이크 모터 해제
     digitalWrite(brk_RELEASE,HIGH); // 해체 한 상태로 브레이크 모터 고정
-    is_brakeING = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
-    Serial.println(is_brake);
+    is_braking = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
+    //Serial.println(is_brake);
   }
-  else ;// 정시 신호 없음, 그리고 브레이크 동작도 없었음. 즉 정상주행
+  else {
+    //Serial.println(is_brake);
+    //Serial.println("4");
+    digitalWrite(brk_SPEED,LOW);
+  }
+  // 정시 신호 없음, 그리고 브레이크 동작도 없었음. 즉 정상주행
 }
 
 /* encoderVal 변화량을 구하기 위한 함수*/
@@ -173,6 +184,11 @@ void control(int degree){
   /* 엔코더 조향각이 바뀔 때마다 steer_angle입력을 막기 위해 while문 추가*/
   while(1)
   {
+    get_data();
+    
+    if(is_brake ==1){
+      break;
+    }
     
    int change = getEncoderTurn(); // encoder 각도 변화량
     encoderVal = encoderVal + change; // encoder 각도 갱신
