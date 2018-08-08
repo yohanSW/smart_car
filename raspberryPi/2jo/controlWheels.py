@@ -5,6 +5,7 @@ import serial
 
 ser = serial.Serial('/dev/ttyACM0', 115200)
 print "wowowo"
+Gosignal = 'G'
 
 class ControlWheels(object):
     ''' Front wheels control class '''
@@ -40,16 +41,21 @@ class ControlWheels(object):
         self.arduino(self._nowAngle, 1)
 
     def arduino(self,angle,stopSig):
+        global Gosignal
         minus_sig = 1
         if(angle < 0):
             angle = -angle
             minus_sig = 0
         ser_str = '#'+ str(minus_sig) + ' , ' + str(int(angle)) +' , ' + str(stopSig)
-
         if ser.readable() :
-            print(ser_str)
-            #ser.flush()
-            ser.write(ser_str)
+            Gosignal = ser.readline()
+            print("aaadfsd: ", Gosignal)
+	    if Gosignal == 'G\r\n' :
+                print("aaa")
+    	        print(ser_str)
+                ser.flush()
+                ser.write(str.encode(ser_str))
+	        Gosignal = 'B'
         print("wow")
 
 
