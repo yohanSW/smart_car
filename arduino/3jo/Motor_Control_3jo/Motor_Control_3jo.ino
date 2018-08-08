@@ -19,7 +19,7 @@
 #define auto_DRI 9 // 자율주행 여부를 아두이노 신호로 받음  (1 : 자율주행 0 : 수동주행)
 #define auto_STOP 10  //2조 
 int is_driving = 0;
-int encoder_boundary = 60; // {3조}
+int encoder_boundary = 70; // {3조}
 
 double steer_angle; // 회전시키고자 하는 스티어링 각도
 double degree; // 회전시키고자 하는 엔코더 각도
@@ -155,7 +155,7 @@ void brake_mode(){
   else {
     //Serial.println(is_brake);
     //Serial.println("4");
-    digitalWrite(brk_SPEED,LOW);
+    //digitalWrite(brk_SPEED,LOW);
   }
   // 정시 신호 없음, 그리고 브레이크 동작도 없었음. 즉 정상주행
 }
