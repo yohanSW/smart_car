@@ -8,8 +8,8 @@
 #define BRAKE 8 // 모터드라이버 -> 릴레이, LOW: Brake 해제 / HIGH: Brake
 #define DIR 7 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
 #define SPEED 5 // 모터드라이버, PWM을 통한 모터 속도제어
-#define gear_ratio 0.162 // 스티어링과 엔코더의 기어비 (73/25)*(20/360) {3조}
-//#define gear_ratio 0.18 // 스티어링과 엔코더의 기어비 (108/25)*(15/360) {2조}
+//#define gear_ratio 0.162 // 스티어링과 엔코더의 기어비 (73/25)*(20/360) {3조}
+#define gear_ratio 0.18 // 스티어링과 엔코더의 기어비 (108/25)*(15/360) {2조}
 
 /* 브레이크 모터 부분 */
 #define brk_DIR 13 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
