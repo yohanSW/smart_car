@@ -3,24 +3,9 @@ import serial
 ser = serial.Serial("/dev/ttyACM0",115200)
 
 def WaitSignal():
-    ser.write(str.encode('W')) #W is Wait
+    WaitSignal = 1
+    ser.write(str(WaitSignal))
     print("SOS Signal Activated")
-
-def BrakeControl():
-    ser.write(str.encode('B')) #B is Brake
-    print("Brake Brake Brake")
-
-def ClutchControl():
-    ser.write(str.encode('C')) #C is Clutch control
-    print("Auto driving is started")
-
-def ClutchAlarm():
-    ser.write(str.encode('A')) #A is clutch Alarm
-    print("Clutch signal is transmitted to Motor Control Arduino")
-
-def AllNormal():
-    ser.write(str.encode('N')) #N is Normal
-    print("All state is normal, manual driving is started again")
 
 def sensing():
     ##print('c')

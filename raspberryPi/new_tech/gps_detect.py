@@ -94,30 +94,22 @@ class GoogleMapDownloader:
 
         # Create a new image of the size require
         map_img = Image.new('RGB', (width, height))
-        count_x = -1
-        for x in range(-(tile_width)//2, (tile_width//2) +1):
-            count_x+=1
-            count_y = -1
-            for y in range(-(tile_height)//2, (tile_height//2) +1):
-                count_y+=1
-                url = 'https://mt0.google.com/vt?x=' + str(start_x + x) + '&y=' + str(start_y + y) + '&z=' + str(self._zoom)
-                print(url)
-                current_tile = str(x) + '-' + str(y)
-                #print(current_tile)
-                urllib.request.urlretrieve(url, current_tile)
-                im = Image.open(current_tile)
-                #print(count_x)
-                #print(count_y)
-                map_img.paste(im, (count_x * 256, count_y * 256))
 
-                if(x == 0 and y == 0):
-                    drawing_point_x = count_x
-                    drawing_point_y = count_y
+        for x in range(0, tile_width):
+            for y in range(0, tile_height):
+                url = 'https://mt0.google.com/vt?x=' + str(start_x + x) + '&y=' + str(start_y + y) + '&z=' + str(
+                    self._zoom)
+
+                current_tile = str(x) + '-' + str(y)
+                urllib.request.urlretrieve(url, current_tile)
+
+                im = Image.open(current_tile)
+                map_img.paste(im, (x * 256, y * 256))
 
                 os.remove(current_tile)
 
-        return map_img, drawing_point_x, drawing_point_y
-        
+        return map_img
+
 def main():
     #Receive GPS Data from Adafruit BreakOut Sensor
     getcontext().prec = 8
@@ -167,8 +159,6 @@ def main():
         if lat > 30 and lng > 120 :
           print("Get the right lan and lon")
           break
-        else :
-          return
 
      # Create a new instance of GoogleMap Downloader
     gmd = GoogleMapDownloader(lat-0.0038, lng-0.0108, 18)
@@ -177,15 +167,7 @@ def main():
 
     try:
         # Get the high resolution image
-        img, gplot_x, gplot_y = gmd.generateImage()
-        img = img.convert("RGBA")
-        ellipse_box = [gplot_x*256-175, gplot_y*256-175, gplot_x*256+175, gplot_y*256+175]
-
-        tmp = Image.new('RGBA', img.size, (0,0,0,0))
-        draw=ImageDraw.Draw(tmp)
-        draw.ellipse(ellipse_box,fill=(255,0,0,127))
-        img = Image.alpha_composite(img, tmp)
-        img = img.convert("RGB")     
+        img = gmd.generateImage()
     except IOError:
         print("Could not generate the image - try adjusting the zoom level and checking your coordinates")
     else:

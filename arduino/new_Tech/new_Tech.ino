@@ -3,10 +3,7 @@
 #define PROCESSING_VISUALIZER 1
 #define SERIAL_PLOTTER  2
 
-char RaspSignal = 'I'; //Raspberry Pi signal for various function in raspberryPi board ,I is Idle
-int BrakeControl = 7;
-int ClutchControl = 12;
-int ClutchAlarm = 11;
+int WaitSignal = 0; //Wait signal for data storage in raspberryPi board
 
 //  Variables
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
@@ -56,10 +53,6 @@ void setup(){
 //   analogReference(EXTERNAL);   
   pinMode(Echo_Pin, INPUT);
   pinMode(Trig_Pin, OUTPUT);
-  pinMode(BrakeControl,OUTPUT);
-  pinMode(ClutchControl,OUTPUT);
-  pinMode(ClutchAlarm,OUTPUT);
-  
   cs_4_2.set_CS_AutocaL_Millis(0xFFFFFFFF);
 }
  
@@ -117,40 +110,17 @@ void loop(){
   //Serial.print(millis() - start);        // check on performance in milliseconds
   //Serial.print("\t");                    // tab character for debug windown spacing
   //***********************************
-  RaspSignal = Serial.read();
-  if(RaspSignal == 'W') // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked ,W is Wait
+  WaitSignal = Serial.parseInt();
+  if(WaitSignal == 1) // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked
   {
-    delay(14200); //LED blinked time
-    RaspSignal = 'I';
-  }
-  else if(RaspSignal == 'B') // B is brake
-  {
-    digitalWrite(BrakeControl,HIGH);
-    RaspSignal = 'I';
-  }
-  else if(RaspSignal == 'C') // C is Clutch control
-  {
-    digitalWrite(ClutchControl,LOW);
-    RaspSignal = 'I';
-  }
-  else if(RaspSignal == 'A') // A is clutch Alarm
-  {
-    digitalWrite(ClutchAlarm,HIGH);
-    RaspSignal = 'I';
-  }
-  else if(RaspSignal == 'N') // N is Normal
-  {
-    digitalWrite(BrakeControl,LOW);
-    digitalWrite(ClutchControl,HIGH);
-    digitalWrite(ClutchAlarm,LOW);
-    RaspSignal = 'I';
+    delay(8200); //LED blinked time
+    WaitSignal = 0;
   }
     Serial.println(vibration_num);
     Serial.println(fir);
     Serial.println(distance);
     Serial.println(BPM);
     Serial.println(touch_result);
-    delay(900);
 }
  
 void ledFadeToBeat(){
