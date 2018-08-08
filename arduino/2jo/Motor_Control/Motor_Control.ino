@@ -55,7 +55,7 @@ void setup() {
  digitalWrite (brk_BRAKE ,HIGH); // 데이터를 입력받기 전엔 브레이크 모터는 정지상태로 시작
  digitalWrite (swpin, HIGH); // encoder 동작을 위한 switch ON
  digitalWrite (BRAKE, HIGH); // 데이터를 입력받기 전엔 모터는 정지상태로 시작
- Serial.begin(9600);
+ Serial.begin(115200);
 }
 
 
@@ -84,8 +84,9 @@ void get_data(){
   while(true) 
   {
     
-    is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
-    //is_driving = 1;              
+    //is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
+    is_driving = 1;              
+    
     break_order = digitalRead(auto_STOP);
     
     if(Serial.available())
@@ -148,7 +149,7 @@ int getEncoderTurn(void)
     if (oldA == HIGH && newA == LOW)
     {
       result = (oldB * 2 - 1);
-      /*
+      /*#
       if (minus_sig == 0)
        result = (-1);  
        */
