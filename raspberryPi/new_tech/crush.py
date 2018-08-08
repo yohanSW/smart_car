@@ -64,7 +64,7 @@ def new_tech():
             #GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
             Accident = 1
         """
-        if fire >= 600 : ##fire signal is measured as analog, if it is over 500, then there are fire around sensor.
+        if fire <= 400 : ##fire signal is measured as analog, if it is over 500, then there are fire around sensor.
             com_alarm = "'Fire Fire Fire'"
             print(com_alarm)
             sense.BrakeControl()
@@ -84,8 +84,8 @@ def new_tech():
                 print("Driver can't handle the car. Start the Auto Driving Mode")
                 Accident = 4
                 NoTouchStack = 0
-        else :
-            NoTouchStack = 0
+            else :
+                NoTouchStack = 0
             ###########################################################################################################        
         if Accident > 0 : # if Accident happend,
             sense.WaitSignal()
