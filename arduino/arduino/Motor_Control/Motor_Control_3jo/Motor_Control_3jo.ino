@@ -8,12 +8,12 @@
 #define BRAKE 8 // 모터드라이버 -> 릴레이, LOW: Brake 해제 / HIGH: Brake
 #define DIR 7 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
 #define SPEED 5 // 모터드라이버, PWM을 통한 모터 속도제어
-//#define gear_ratio 0.162 // 스티어링과 엔코더의 기어비 (73/25)*(20/360) {3조}
-#define gear_ratio 0.18 // 스티어링과 엔코더의 기어비 (108/25)*(15/360) {2조}
+#define gear_ratio 0.162 // 스티어링과 엔코더의 기어비 (73/25)*(20/360) {3조}
+//#define gear_ratio 0.18 // 스티어링과 엔코더의 기어비 (108/25)*(15/360) {2조}
 
 /* 브레이크 모터 부분 */
 #define brk_DIR 13 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
-#define brk_BRAKE 2 // 모터드라이버 -> 릴레이, LOW: brk_BRAKE 해제 / HIGH: brk_BRAKE
+#define brk_BRAKE 2 // 모터드라이버 -> 릴레이, HIGH: brk_BRAKE 해제 / LOW: brk_BRAKE
 #define brk_SPEED 5 // 모터드라이버, PWM을 통한 모터 속도제어
 
 /* 자율주행여부, 브레이크제어 코드 */
@@ -21,8 +21,8 @@
 #define auto_STOP 10
 int is_driving = 0;
 int break_order = 0;
-int encoder_boundary = 84; // {3조}
-//int encoder_boundary = 102; // {2조}
+int encoder_boundary = 80; // {3조}
+int encoder_boundary = 102; // {2조}
 
 double steer_angle; // 회전시키고자 하는 스티어링 각도
 double degree; // 회전시키고자 하는 엔코더 각도
@@ -52,10 +52,10 @@ void setup() {
  pinMode (brk_DIR, OUTPUT);
  pinMode (auto_DRI, INPUT);
  pinMode (auto_STOP, INPUT); 
- digitalWrite (brk_BRAKE ,HIGH); // 데이터를 입력받기 전엔 브레이크 모터는 정지상태로 시작
+ digitalWrite (brk_BRAKE , LOW); // 데이터를 입력받기 전엔 브레이크 모터는 정지상태로 시작
  digitalWrite (swpin, HIGH); // encoder 동작을 위한 switch ON
  digitalWrite (BRAKE, HIGH); // 데이터를 입력받기 전엔 모터는 정지상태로 시작
- Serial.begin(9600);
+ Serial.begin(115200);
 }
 
 
@@ -84,8 +84,8 @@ void get_data(){
   while(true) 
   {
     
-    is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
-    //is_driving = 1;              
+    //is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
+    is_driving = 1;              
     break_order = digitalRead(auto_STOP);
     
     if(Serial.available())
@@ -116,10 +116,10 @@ void break_mode(){
   if(is_break == 1 && is_breakING == 0) //정지 신호 발생, 그리고 원래 브레이크모터 동작은 없었음
   { 
     digitalWrite(brk_DIR,LOW); // 항상 CW방향으로 회전
-    digitalWrite(brk_BRAKE,LOW); //정지 동작을 위해 브레이크 모터 고정 해제   
+    digitalWrite(brk_BRAKE,HIGH); //정지 동작을 위해 브레이크 모터 고정 해제   
     digitalWrite(brk_SPEED,255);   
     delay(1500); // 1.5초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
-    digitalWrite(brk_BRAKE,HIGH); // 차량 브레이크가 당겨진 상태로 고정
+    digitalWrite(brk_BRAKE,LOW); // 차량 브레이크가 당겨진 상태로 고정
     is_breakING = 1; //브레이크모터가 동작중인데 loop를 돌아 중복하여 브레이크모터 동작 방지
   }
   else if(is_break ==1 && is_breakING == 1) // 여전히 정지 신호 발생, 브레이크 모터는 동작 중
@@ -129,10 +129,10 @@ void break_mode(){
   else if(is_break == 0 && is_breakING == 1) // 브레이크 모터 동작중, 정지 신호 해제
   {
     digitalWrite(brk_DIR,HIGH); // 당겨진 브레이크 모터 풀어주기 위해 방향 반대로 설정
-    digitalWrite(brk_BRAKE,LOW); // 고정된 브레이크 모터 해제
+    digitalWrite(brk_BRAKE,HIGH); // 고정된 브레이크 모터 해제
     digitalWrite(brk_SPEED,255);
     delay(1500); // 1.5초 동안 브레이크 모터 해제
-    digitalWrite(brk_BRAKE,HIGH); // 해체 한 상태로 브레이크 모터 고정
+    digitalWrite(brk_BRAKE,LOW); // 해체 한 상태로 브레이크 모터 고정
     is_breakING = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
   }
   else ;// 정시 신호 없음, 그리고 브레이크 동작도 없었음. 즉 정상주행
@@ -148,10 +148,8 @@ int getEncoderTurn(void)
     if (oldA == HIGH && newA == LOW)
     {
       result = (oldB * 2 - 1);
-      /*
       if (minus_sig == 0)
        result = (-1);  
-       */
     }
 
   oldA = newA;
@@ -181,7 +179,7 @@ void control(int degree){
 
     /* 실제 엔코더의 각도가 원하는 엔코더 각도 범주 안에 들어올 경우 */
     /* 브레이크를 작동하고 while문을 벗어난다 */
-    if ( encoderVal >= degree-2 && encoderVal <= degree+2 ){
+    if ( encoderVal >= degree-3 && encoderVal <= degree+3 ){
       digitalWrite(BRAKE,HIGH);
       mt_ctrl_cnt=0;
       break;
