@@ -52,11 +52,11 @@ class ControlWheels(object):
             Gosignal = ser.readline()
             print("Gosignal : ", Gosignal)
 	    if Gosignal == 'G\r\n' :
-                print("aaa")
-    	        print(ser_str)
-                ser.flush()
-                ser.write(str.encode(ser_str)) 
-	        Gosignal = 'B'
+            	print("aaa")
+    	    	print(ser_str)
+            	ser.flush()
+            	ser.write(str.encode(ser_str)) 
+	    	Gosignal = 'B'
         print("wow")
 
 
