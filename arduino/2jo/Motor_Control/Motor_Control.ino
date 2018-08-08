@@ -62,6 +62,7 @@ void setup() {
 
 void loop() {
   /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
+  Serial.write('A');
   get_data();
 
   steer_angle = wheel_angle * 13 ; // 스티어링 각도와 조향 각도의 비 13 : 1

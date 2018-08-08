@@ -45,9 +45,11 @@ class ControlWheels(object):
             angle = -angle
             minus_sig = 0
         ser_str = '#'+ str(minus_sig) + ' , ' + str(int(angle)) +' , ' + str(stopSig)
-        print(ser_str)
-        ser.flush()
-        ser.write(ser_str)
+
+        if ser.readable() :
+            print(ser_str)
+            #ser.flush()
+            ser.write(ser_str)
         print("wow")
 
 
