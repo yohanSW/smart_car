@@ -1,0 +1,74 @@
+//모터부
+const int pin_FR = 26;        // LOW : CW, HIGH : CCW
+const int pin_Brk = 27;       // LOW : Free, HIGH : Brake
+const int pin_RS = 28;        // LOW : Run, HIGH : Stop
+const int SPEED = 8;
+
+//엔코더
+int pinA = 2;
+int pinB = 3;
+int encoderPosCount = 0;
+int pinALast;
+int aVal;
+boolean bCW;
+int maxValue = 66;
+
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(pinA, INPUT);
+  pinMode(pinB, INPUT);
+
+  pinALast = digitalRead(pinA);
+
+  attachInterrupt(digitalPinToInterrupt(pinA), updateEncoderValue, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(pinB), updateEncoderValue, CHANGE);
+
+  pinMode(pin_FR, OUTPUT);
+  pinMode(pin_RS, OUTPUT);
+  pinMode(pin_Brk, OUTPUT);
+}
+int lastValue=0;
+void loop() {
+  
+  // 모터CW = 우회전 
+  digitalWrite(pin_FR, LOW);
+  digitalWrite(pin_Brk, LOW);
+  digitalWrite(pin_RS, LOW);
+  analogWrite(SPEED, 120);    // 70 성공
+  delay(1500);
+  digitalWrite(pin_RS, HIGH);
+  delay(3000);
+
+  // 모터 CCW = 좌회전
+  // 핸들을 오른쪽으로 돌릴 때 더 큰 힘(SPEED)가 필요
+  // CW 대비 더 큰 SPEED : 50 -> 60
+  digitalWrite(pin_FR, HIGH);
+  digitalWrite(pin_Brk, LOW);
+  digitalWrite(pin_RS, LOW);
+  analogWrite(SPEED, 120);
+  delay(1500);
+  digitalWrite(pin_RS, HIGH);
+  delay(3000);
+  int value = encoderPosCount;
+  Serial.print("차이 : ");
+  Serial.println(value - lastValue);
+  lastValue= value;
+}
+
+void updateEncoderValue() {
+  //엔코더값 이용하여 넘어가면 작동 중지
+
+  aVal = digitalRead(pinA);
+  if (aVal != pinALast) {
+    if (digitalRead(pinB) != aVal) {
+      encoderPosCount++;
+      bCW = true;
+    }
+    else {
+      bCW = false;
+      encoderPosCount--;
+    }
+  }
+  pinALast = aVal;
+}
