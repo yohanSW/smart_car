@@ -115,11 +115,6 @@ def new_tech():
                     ##upload twitter
                     ####make code here!
                     
-                    print(com_alarm)
-                    lattitude = gps_detect.lat
-                    longitude = gps_detect.lng
-                    print(lattitude)
-                    print(longitude)
                     print("Image is uploaded on twit")
                     str_com ="python3 post_image.py high_resolution_image.png " + com_alarm
                     subprocess.check_output(str_com,shell=True)
