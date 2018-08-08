@@ -59,7 +59,9 @@ void setup(){
   pinMode(BrakeControl,OUTPUT);
   pinMode(ClutchControl,OUTPUT);
   pinMode(ClutchAlarm,OUTPUT);
-  
+  digitalWrite(BrakeControl,LOW);
+  digitalWrite(ClutchControl,LOW);
+  digitalWrite(ClutchAlarm,LOW);
   cs_4_2.set_CS_AutocaL_Millis(0xFFFFFFFF);
 }
  
@@ -118,19 +120,19 @@ void loop(){
   //Serial.print("\t");                    // tab character for debug windown spacing
   //***********************************
   RaspSignal = Serial.read();
-  if(RaspSignal == 'W') // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked ,W is Wait
+  /*if(RaspSignal == 'W') // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked ,W is Wait
   {
     delay(14200); //LED blinked time
     RaspSignal = 'I';
-  }
-  else if(RaspSignal == 'B') // B is brake
+  }*/
+  if(RaspSignal == 'B') // B is brake
   {
     digitalWrite(BrakeControl,HIGH);
     RaspSignal = 'I';
   }
   else if(RaspSignal == 'C') // C is Clutch control
   {
-    digitalWrite(ClutchControl,LOW);
+    digitalWrite(ClutchControl,HIGH);
     RaspSignal = 'I';
   }
   else if(RaspSignal == 'A') // A is clutch Alarm
@@ -141,16 +143,24 @@ void loop(){
   else if(RaspSignal == 'N') // N is Normal
   {
     digitalWrite(BrakeControl,LOW);
-    digitalWrite(ClutchControl,HIGH);
+    digitalWrite(ClutchControl,LOW);
     digitalWrite(ClutchAlarm,LOW);
     RaspSignal = 'I';
   }
+  else if (RaspSignal == 'G')
+  {
     Serial.println(vibration_num);
     Serial.println(fir);
     Serial.println(distance);
     Serial.println(BPM);
     Serial.println(touch_result);
-    delay(900);
+    RaspSignal = 'I';
+  }
+  else if (RaspSignal == 'W')
+  {
+    RaspSignal = 'I';
+  }
+  delay(500);
 }
  
 void ledFadeToBeat(){
