@@ -167,6 +167,8 @@ def main():
         if lat > 30 and lng > 120 :
           print("Get the right lan and lon")
           break
+        else :
+          return
 
      # Create a new instance of GoogleMap Downloader
     gmd = GoogleMapDownloader(lat-0.0038, lng-0.0108, 18)
