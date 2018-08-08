@@ -135,14 +135,14 @@ void loop(){
   }
   else if(RaspSignal == 'A') // A is clutch Alarm
   {
-    digitalWrite(ClutchAlarm,LOW);
+    digitalWrite(ClutchAlarm,HIGH);
     RaspSignal = 'I';
   }
   else if(RaspSignal == 'N') // N is Normal
   {
     digitalWrite(BrakeControl,LOW);
     digitalWrite(ClutchControl,HIGH);
-    digitalWrite(ClutchAlarm,HIGH);
+    digitalWrite(ClutchAlarm,LOW);
     RaspSignal = 'I';
   }
     Serial.println(vibration_num);
