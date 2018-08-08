@@ -110,7 +110,7 @@ void get_data(){
 }
 
 void brake_mode(){
-  /*
+  
   // 브레이크 잠긴 상태로 신호가 꺼졌을 경우 대비용
   if (is_brake == 2)
   {
@@ -122,7 +122,7 @@ void brake_mode(){
     is_braking = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
     Serial.println(is_brake);
   }
-  */
+  
   if(is_brake == 1 && is_braking == 0) //정지 신호 발생, 그리고 원래 브레이크모터 동작은 없었음
   { 
     digitalWrite(brk_DIR,LOW); // 항상 CW방향으로 회전
@@ -146,7 +146,6 @@ void brake_mode(){
     is_braking = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
   }
   else {
-    //digitalWrite(brk_SPEED,LOW);
   }
   // 정시 신호 없음, 그리고 브레이크 동작도 없었음. 즉 정상주행
 }
@@ -176,13 +175,13 @@ void control(int degree){
   /* 엔코더 조향각이 바뀔 때마다 steer_angle입력을 막기 위해 while문 추가*/
   while(1)
   {
-    
+    /*
     get_data();
     
     if(is_brake ==1){
       break;
     }
-    
+    */
     
     
    int change = getEncoderTurn(); // encoder 각도 변화량
@@ -191,8 +190,8 @@ void control(int degree){
     if (digitalRead(swpin) == LOW)
       encoderVal = 0;
 
-    Serial.print("encoderVal : ");  
-    Serial.println(encoderVal);
+    //Serial.print("encoderVal : ");  
+    //Serial.println(encoderVal);
     digitalWrite(mt_STOP,LOW); // 모터동작을 시작하기 위해 브레이크 해제
     if (encoderVal <= degree) // 방향 제어
       digitalWrite(mt_DIR, LOW);// CW 방향
@@ -202,7 +201,7 @@ void control(int degree){
 
     /* 실제 엔코더의 각도가 원하는 엔코더 각도 범주 안에 들어올 경우 */
     /* 브레이크를 작동하고 while문을 벗어난다 */
-    if ( encoderVal == degree ){
+    if ( encoderVal == degree  ){
       digitalWrite(mt_STOP,HIGH);
       mt_ctrl_cnt=0;
       break;
