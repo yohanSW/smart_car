@@ -9,7 +9,7 @@ img = cv2.VideoCapture(0)
 img.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH,1280);
 img.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT,720);
 img.set(cv2.cv.CV_CAP_PROP_FPS, 30);
-img = cv2.VideoCapture('/home/esoclab/Downloads/Video37.mp4')
+img = cv2.VideoCapture('/home/pi/Downloads/Video37.mp4')
 
 # Show image captured by camera, True to turn on, you will need #DISPLAY and it also slows the speed of tracking
 show_image_enable   = False
