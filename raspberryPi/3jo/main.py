@@ -8,14 +8,14 @@ import cv2
 #img = cv2.VideoCapture(0)
 img = cv2.VideoCapture('/home/song/Desktop/lastYear.mp4')
 
-#raspberry pi
+#lattepanda
 
 img.set(cv2.CAP_PROP_FRAME_WIDTH,1280)
 img.set(cv2.CAP_PROP_FRAME_HEIGHT,720)
 img.set(cv2.CAP_PROP_FPS, 30)
 
 """
-#lattepanda
+#raspberry pi
 img.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH,1280)
 img.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT,720)
 img.set(cv2.cv.CV_CAP_PROP_FPS, 30)
@@ -33,7 +33,7 @@ adjusted_angle      = 0    # Calibrate the front wheel angle whose direction is 
 approach_angle      = 3
 error_signal        = -700
 turning_max         = 40
-image_cnt	    = 7
+image_cnt	    = 30
 
 cw = controlWheels.ControlWheels()
 cw.offset = 0
