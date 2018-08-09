@@ -1,4 +1,8 @@
-/* 3조 모터컨트롤 코드*/
+/* 2조 모터컨트롤 코드*/
+
+/* 전자클러치 부분 */
+int ClutchControl = 6;
+
 /* 엔코더 부분 */
 #define clpin 4 // 엔코더, 클락핀
 #define dtpin 11 // 엔코더, 데이타핀
@@ -41,6 +45,7 @@ int is_break=0; // 차량 운행 정지 여부, 0: 운행 / 1: 정지
 int is_breakING = 0; // 브레이크 모터가 동작 중인가? 0: 브레이크모터 동작 X / 1: 브레이크모터 동작 O
 
 void setup() {
+ pinMode(ClutchControl,OUTPUT);
  pinMode (clpin, INPUT);
  pinMode (dtpin, INPUT);
  pinMode (swpin, INPUT);
@@ -52,6 +57,7 @@ void setup() {
  pinMode (brk_DIR, OUTPUT);
  pinMode (auto_DRI, INPUT);
  pinMode (auto_STOP, INPUT); 
+ digitalWrite(ClutchControl,LOW);
  digitalWrite (brk_BRAKE ,HIGH); // 데이터를 입력받기 전엔 브레이크 모터는 정지상태로 시작
  digitalWrite (swpin, HIGH); // encoder 동작을 위한 switch ON
  digitalWrite (BRAKE, HIGH); // 데이터를 입력받기 전엔 모터는 정지상태로 시작
@@ -69,10 +75,12 @@ void loop() {
   degree = steer_angle * gear_ratio;
 
   if(is_driving != 0){
+    digitalWrite(ClutchControl,HIGH);
     break_mode();
     control(degree);
   }
   else{
+    digitalWrite(ClutchControl,LOW);
     encoderVal = encoderVal + getEncoderTurn(); // encoder 각도 갱신
     digitalWrite(BRAKE,HIGH);
   }
