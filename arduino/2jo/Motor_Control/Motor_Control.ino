@@ -21,8 +21,8 @@
 #define auto_STOP 10
 int is_driving = 0;
 int break_order = 0;
-int encoder_boundary = 84; // {3조}
-//int encoder_boundary = 102; // {2조}
+//int encoder_boundary = 84; // {3조}
+int encoder_boundary = 102; // {2조}
 
 double steer_angle; // 회전시키고자 하는 스티어링 각도
 double degree; // 회전시키고자 하는 엔코더 각도
@@ -120,20 +120,20 @@ void break_mode(){
     digitalWrite(brk_DIR,LOW); // 항상 CW방향으로 회전
     digitalWrite(brk_BRAKE,LOW); //정지 동작을 위해 브레이크 모터 고정 해제   
     digitalWrite(brk_SPEED,255);   
-    delay(1500); // 1.5초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
+    delay(700); // 1.5초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
     digitalWrite(brk_BRAKE,HIGH); // 차량 브레이크가 당겨진 상태로 고정
     is_breakING = 1; //브레이크모터가 동작중인데 loop를 돌아 중복하여 브레이크모터 동작 방지
   }
   else if(is_break ==1 && is_breakING == 1) // 여전히 정지 신호 발생, 브레이크 모터는 동작 중
   {
-    delay(500);
+    delay(100);
   }
   else if(is_break == 0 && is_breakING == 1) // 브레이크 모터 동작중, 정지 신호 해제
   {
     digitalWrite(brk_DIR,HIGH); // 당겨진 브레이크 모터 풀어주기 위해 방향 반대로 설정
     digitalWrite(brk_BRAKE,LOW); // 고정된 브레이크 모터 해제
     digitalWrite(brk_SPEED,255);
-    delay(1500); // 1.5초 동안 브레이크 모터 해제
+    delay(700); // 1.5초 동안 브레이크 모터 해제
     digitalWrite(brk_BRAKE,HIGH); // 해체 한 상태로 브레이크 모터 고정
     is_breakING = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
   }
