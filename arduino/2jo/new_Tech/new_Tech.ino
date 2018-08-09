@@ -5,7 +5,7 @@
 
 char RaspSignal = 'I'; //Raspberry Pi signal for various function in raspberryPi board ,I is Idle
 int BrakeControl = 7;
-//int ClutchControl = 12;
+int ClutchControl = 12;
 int ClutchAlarm = 11;
 
 //  Variables
@@ -57,10 +57,10 @@ void setup(){
   pinMode(Echo_Pin, INPUT);
   pinMode(Trig_Pin, OUTPUT);
   pinMode(BrakeControl,OUTPUT);
-  //pinMode(ClutchControl,OUTPUT);
+  pinMode(ClutchControl,OUTPUT);
   pinMode(ClutchAlarm,OUTPUT);
   digitalWrite(BrakeControl,LOW);
-  //digitalWrite(ClutchControl,LOW);
+  digitalWrite(ClutchControl,LOW);
   digitalWrite(ClutchAlarm,LOW);
   cs_4_2.set_CS_AutocaL_Millis(0xFFFFFFFF);
 }
@@ -132,7 +132,7 @@ void loop(){
   }
   else if(RaspSignal == 'C') // C is Clutch control
   {
-    //digitalWrite(ClutchControl,HIGH);
+    digitalWrite(ClutchControl,HIGH);
     RaspSignal = 'I';
   }
   else if(RaspSignal == 'A') // A is clutch Alarm
@@ -143,7 +143,7 @@ void loop(){
   else if(RaspSignal == 'N') // N is Normal
   {
     digitalWrite(BrakeControl,LOW);
-    //digitalWrite(ClutchControl,LOW);
+    digitalWrite(ClutchControl,LOW);
     digitalWrite(ClutchAlarm,LOW);
     RaspSignal = 'I';
   }

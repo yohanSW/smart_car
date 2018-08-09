@@ -9,11 +9,9 @@ def BrakeControl():
     ser.write(str.encode('B')) #B is Brake
     print("Brake Brake Brake")
 
-"""
-    def ClutchControl():
+def ClutchControl():
     ser.write(str.encode('C')) #C is Clutch control
     print("Auto driving is started")
-"""
 
 def ClutchAlarm():
     ser.write(str.encode('A')) #A is clutch Alarm

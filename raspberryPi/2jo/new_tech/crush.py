@@ -25,7 +25,7 @@ def main():
     #new_tech()
     while True :
         if GPIO.input(auto_driving_switch)==1:
-            #sense.ClutchControl()
+            sense.ClutchControl()
             sense.ClutchAlarm()
             #sense.BrakeControl()
             #GPIO.output(ClutchControl,True) ##Auto Driving start
@@ -77,7 +77,7 @@ def new_tech():
             if touchresult == 0 :
             NoTouchStack = NoTouchStack + 1
             if NoTouchStack == 2 :
-                #sense.ClutchControl()
+                sense.ClutchControl()
                 sense.ClutchAlarm()
                 #GPIO.output(ClutchControl,True) ##Auto Driving start
                 #GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
