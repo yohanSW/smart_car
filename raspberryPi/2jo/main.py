@@ -6,8 +6,8 @@ import numpy as np
 import cv2
 #*********************************************************************************
 img = cv2.VideoCapture(0)
-img.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH,1280);
-img.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT,720);
+img.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH,1024);
+img.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT,768);
 img.set(cv2.cv.CV_CAP_PROP_FPS, 30);
 img = cv2.VideoCapture('/home/pi/Downloads/Video37.mp4')
 
