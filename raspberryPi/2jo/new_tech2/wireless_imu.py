@@ -22,7 +22,7 @@ def main():
             x = float(str(message).split(',')[6])
             y = float(str(message).split(',')[7])
             z = float(str(message).split(',')[8])
-            ser_str = str(x) + ',' + str(y) + ',' + str(z)
+            ser_str = '#' + str(x) + ',' + str(y) + ',' + str(z)
             #print(ser_str)
         if ser.readable() :
             Gosignal = ser.readline()
