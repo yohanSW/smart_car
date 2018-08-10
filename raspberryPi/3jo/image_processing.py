@@ -46,6 +46,7 @@ def image_processing(img):
     stop_status_light = False
     draw_circle_enable = True
     crop_image = bgr_image[0:SCREEN_HEIGHT, 0:SCREEN_WIDTH]
+    '''
     clahe = cv2.createCLAHE(clipLimit=3., tileGridSize = (8,8))
     lab = cv2.cvtColor(crop_image, cv2.COLOR_BGR2LAB)
     l,a,b = cv2.split(lab)
@@ -54,6 +55,7 @@ def image_processing(img):
     crop_image = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
     gamma = 0.08
     crop_image = adjust_gamma(crop_image, gamma=gamma)
+    '''
     '''
         Epsilon will be used when dealing with "DIVISION by ZERO" error. Epsilon originally means "VERY SMALL number like 1e-6".
     '''
@@ -169,6 +171,15 @@ def image_processing(img):
         Detecting lane using Hough-Transform
         This will return [[ [rho, theta], ... ]]
     '''
+    clahe = cv2.createCLAHE(clipLimit=3., tileGridSize = (8,8))
+    lab = cv2.cvtColor(crop_image.copy(), cv2.COLOR_BGR2LAB)
+    l,a,b = cv2.split(lab)
+    l2 = clahe.apply(l)
+    lab = cv2.merge((l2,a,b))
+    crop_image_2 = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+    gamma = 0.08
+    crop_image_2 = adjust_gamma(crop_image_2, gamma=gamma)
+    edge_image = cv2.Canny(crop_image_2, 130, 250, apertureSize=3)
     edge_image_for_line = edge_image[int((SCREEN_HEIGHT/2)):SCREEN_HEIGHT, 0:SCREEN_WIDTH].copy()
     lines = cv2.HoughLines(edge_image_for_line, 1, np.pi/180, 100)
     sum_of_rho = 0
