@@ -4,7 +4,7 @@ import serial
 
 ser = serial.Serial("/dev/ttyACM0",115200)
 Gosignal = 'G'
-host = '192.168.0.118'
+host = '192.168.0.113'
 port = 5555
 s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
