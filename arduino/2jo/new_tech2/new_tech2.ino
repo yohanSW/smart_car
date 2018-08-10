@@ -2,9 +2,9 @@ int PUL=6; //define Pulse pin
 int DIR=4; //define Direction pin
 int ENA=2; //define Enable Pin
 
-float Xdata;
-float Ydata;
-float Zdata;
+float Xdata=0;
+float Ydata=0;
+float Zdata=0;
 
 bool step_DIR;
 int step_MOVE;
@@ -18,7 +18,7 @@ void setup() {
 
 void loop() 
 {
-  Serial.println('G');
+  //Serial.println('G');
   get_data();
   
   /* Change Sensor data into Step Motor degree. In Step Motor, Use Ydata */
@@ -43,6 +43,9 @@ void loop()
     digitalWrite(PUL,LOW);
     delayMicroseconds(500);
   }
+  Xdata=0;
+  Ydata=0;
+  Zdata=0;
 }
 
 void get_data()
@@ -54,9 +57,9 @@ void get_data()
     {
       if(Serial.find('#'))
       {
-        Xdata = Serial.parseFloat();
-        Ydata = Serial.parseFloat();
-        Zdata = Serial.parseFloat();
+        Xdata += Serial.parseFloat();
+        Ydata += Serial.parseFloat();
+        Zdata += Serial.parseFloat();
       }
       else
         continue;
