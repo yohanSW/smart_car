@@ -13,6 +13,7 @@ void setup() {
   pinMode (PUL, OUTPUT);
   pinMode (DIR, OUTPUT);
   pinMode (ENA, OUTPUT);
+  Serial.begin(115200);
 }
 
 void loop() 
