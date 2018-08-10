@@ -54,7 +54,6 @@ def image_processing(img):
     crop_image_2 = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
     gamma = 0.08
     crop_image_2 = adjust_gamma(crop_image_2, gamma=gamma)
-    edge_image = cv2.Canny(crop_image_2, 130, 250, apertureSize=3)
     '''
     clahe = cv2.createCLAHE(clipLimit=3., tileGridSize = (8,8))
     lab = cv2.cvtColor(crop_image, cv2.COLOR_BGR2LAB)
@@ -180,7 +179,7 @@ def image_processing(img):
         Detecting lane using Hough-Transform
         This will return [[ [rho, theta], ... ]]
     '''
-    
+    edge_image = cv2.Canny(crop_image_2, 130, 250, apertureSize=3)
     edge_image_for_line = edge_image[int((SCREEN_HEIGHT/2)):SCREEN_HEIGHT, 0:SCREEN_WIDTH].copy()
     lines = cv2.HoughLines(edge_image_for_line, 1, np.pi/180, 100)
     sum_of_rho = 0
