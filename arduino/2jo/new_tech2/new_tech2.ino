@@ -23,12 +23,12 @@ void loop()
   /* Change Sensor data into Step Motor degree. In Step Motor, Use Ydata */
   if(Ydata >= 0)
   {
-    step_DIR = HIGH;
+    step_DIR = true;
     step_MOVE = int(Ydata * 100);
   }
   else
   {
-    step_DIR = LOW;
+    step_DIR = false;
     Ydata = -Ydata;
     step_MOVE = int(Ydata * 100);
   }
