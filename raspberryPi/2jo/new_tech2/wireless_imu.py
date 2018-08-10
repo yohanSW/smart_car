@@ -1,8 +1,8 @@
 import socket, traceback
-#import serial
+import serial
 
 
-#ser = serial.Serial("/dev/ttyACM0",115200)
+ser = serial.Serial("/dev/ttyACM0",115200)
 Gosignal = 'G'
 host = '192.168.0.113'
 port = 5555
