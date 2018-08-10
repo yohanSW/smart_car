@@ -49,12 +49,12 @@ class ControlWheels(object):
         ser_str = '#'+ str(minus_sig) + ' , ' + str(int(angle)) +' , ' + str(stopSig)
         if ser.readable() :
             Gosignal = ser.readline()
-            print("aaadfsd: ", Gosignal)
+            print("sig: ", Gosignal)
 	    if Gosignal == 'G\r\n' :
-                print("aaa")
-    	        print(ser_str)
-                ser.flush()
-                ser.write(str.encode(ser_str))
+            print("aaa")
+    	    print(ser_str)
+            ser.flush()
+            ser.write(str.encode(ser_str))
 	        Gosignal = 'B'
         print("wow")
 
