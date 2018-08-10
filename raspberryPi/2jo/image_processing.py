@@ -21,8 +21,8 @@ import math
 import time
 #img = cv2.VideoCapture(0)
 #img = cv2.videoCapture('/home/pi/Downloads/lastYear.mp4')
-SCREEN_WIDTH = 1280  # Screen Width
-SCREEN_HEIGHT = 720  # Screen Height
+SCREEN_WIDTH = 1024  # Screen Width
+SCREEN_HEIGHT = 768  # Screen Height
 
 def image_processing(img):
     # Load input image
