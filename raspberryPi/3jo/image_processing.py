@@ -23,6 +23,11 @@ import time
 #img = cv2.videoCapture('/home/pi/Downloads/lastYear.mp4')
 SCREEN_WIDTH = 1280  # Screen Width
 SCREEN_HEIGHT = 720  # Screen Height
+def adjust_gamma(image, gamma=1.0):
+   invGamma = 1.0 / gamma
+   table = np.array([((i / 255.0) ** invGamma) * 255
+      for i in np.arange(0, 256)]).astype("uint8")
+   return cv2.LUT(image, table)
 
 def image_processing(img):
     # Load input image
@@ -41,6 +46,8 @@ def image_processing(img):
     stop_status_light = False
     draw_circle_enable = True
     crop_image = bgr_image[0:SCREEN_HEIGHT, 0:SCREEN_WIDTH]
+    gamma = 0.1
+    crop_image = adjust_gamma(crop_image, gamma=gamma)
     '''
         Epsilon will be used when dealing with "DIVISION by ZERO" error. Epsilon originally means "VERY SMALL number like 1e-6".
     '''
