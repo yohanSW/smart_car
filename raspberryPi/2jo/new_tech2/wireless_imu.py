@@ -17,21 +17,21 @@ def main():
 
     while True:
         try:
-            message, address = s.recvfrom(8192)
-            #print(str(message))
-            x = float(str(message).split(',')[6])
-            y = float(str(message).split(',')[7])
-            z = float(str(message).split(',')[8])
-            ser_str = '#' + str(x) + ',' + str(y) + ',' + str(z)
             #print(ser_str)
-        if ser.readable() :
-            Gosignal = ser.readline()
-            print("sig: ", Gosignal)
-        if Gosignal == 'G\r\n' :
-    	    print(ser_str)
-            ser.flush()
-            ser.write(str.encode(ser_str))
-	        Gosignal = 'B'
+            if ser.readable() :
+                Gosignal = ser.readline()
+                print("sig: ", Gosignal)
+            if Gosignal == 'G\r\n' :
+                message, address = s.recvfrom(8192)
+                #print(str(message))
+                x = float(str(message).split(',')[6])
+                y = float(str(message).split(',')[7])
+                z = float(str(message).split(',')[8])
+                ser_str = '#' + str(x) + ',' + str(y) + ',' + str(z)
+    	        print(ser_str)
+                ser.flush()
+                ser.write(str.encode(ser_str))
+	            Gosignal = 'B'
         except (KeyboardInterrupt, SystemExit):
             raise
         except:
