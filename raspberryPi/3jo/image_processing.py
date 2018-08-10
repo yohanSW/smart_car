@@ -46,7 +46,13 @@ def image_processing(img):
     stop_status_light = False
     draw_circle_enable = True
     crop_image = bgr_image[0:SCREEN_HEIGHT, 0:SCREEN_WIDTH]
-    gamma = 0.1
+    clahe = cv2.createCLAHE(clipLimit=3., tileGridSize = (8,8))
+    lab = cv2.cvtColor(crop_image, cv2.COLOR_BGR2LAB)
+    l,a,b = cv2.split(lab)
+    l2 = clahe.apply(l)
+    lab = cv2.merge((l2,a,b))
+    crop_image = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+    gamma = 0.08
     crop_image = adjust_gamma(crop_image, gamma=gamma)
     '''
         Epsilon will be used when dealing with "DIVISION by ZERO" error. Epsilon originally means "VERY SMALL number like 1e-6".
