@@ -8,9 +8,9 @@ int ENA=2; //define Enable Pin
 int SERVO = 5; //define Servo Pin
 
 /* Sensor data */
-float Xdata;
-float Ydata;
-float Zdata;
+float Xdata=0;
+float Ydata=0;
+float Zdata=0;
 
 /* Step Motor */
 bool step_DIR;
@@ -34,7 +34,7 @@ void loop()
   get_data();
 
   /* Change Sensor data into Servo Motor degree. In Servo Motor, Use Xdata */
-  servo_MOVE = int((Xdata * 10) + 50);
+  servo_MOVE += int((Xdata * 10) + 50);
   
   if(servo_MOVE <= 0)
   {
@@ -49,13 +49,13 @@ void loop()
   if(Ydata >= 0)
   {
     step_DIR = HIGH;
-    step_MOVE = int(Ydata * 30);
+    step_MOVE = int(Ydata * 20);
   }
   else
   {
     step_DIR = LOW;
     Ydata = -Ydata;
-    step_MOVE = int(Ydata * 30);
+    step_MOVE = int(Ydata * 20);
   }
   /* Motor control by using MOVE data */
 
@@ -71,6 +71,9 @@ void loop()
     delayMicroseconds(500);
     Xservo.write(servo_MOVE); // to control step motor and servo motor simultaneously, put servo.write into the for loop
   }
+  Xdata=0;
+  Ydata=0;
+  Zdata=0;
 
 }
 
@@ -83,9 +86,9 @@ void get_data()
     {
       if(Serial.find('#'))
       {
-        Xdata = Serial.parseFloat();
-        Ydata = Serial.parseFloat();
-        Zdata = Serial.parseFloat();
+        Xdata += Serial.parseFloat();
+        Ydata += Serial.parseFloat();
+        Zdata += Serial.parseFloat();
       }
       else
         continue;
