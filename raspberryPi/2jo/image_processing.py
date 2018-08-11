@@ -130,7 +130,7 @@ def image_processing(img):
     '''
         About lane, we should use canny edge detection algorithm
     '''
-    edge_image = cv2.Canny(crop_image, 150, 300, apertureSize=3)
+    edge_image = cv2.Canny(crop_image_2, 150, 300, apertureSize=3)
 
     ########################<Stop Line>############################################################
     '''
