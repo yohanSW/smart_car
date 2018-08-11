@@ -26,6 +26,7 @@ void setup()
   pinMode (ENA, OUTPUT);
   Xservo.attach(SERVO);
   Xservo.write(45); // servo motor must be started at 45 degree
+  servo_MOVE = 45;
   Serial.begin(115200);
 }
 
@@ -34,7 +35,7 @@ void loop()
   get_data();
 
   /* Change Sensor data into Servo Motor degree. In Servo Motor, Use Xdata */
-  servo_MOVE += int((Xdata * 10) + 50);
+  servo_MOVE += int(Xdata * 10);
   
   if(servo_MOVE <= 0)
   {
@@ -74,6 +75,7 @@ void loop()
   Xdata=0;
   Ydata=0;
   Zdata=0;
+
 
 }
 
