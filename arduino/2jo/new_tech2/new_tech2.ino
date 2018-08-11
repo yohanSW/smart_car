@@ -61,7 +61,7 @@ void loop()
 
 
   
-  for (int i=0; i<step_MOVE; i++)    //950이 한바꾸
+  for (int i=0; i<step_MOVE; i++)    //950 is 360 degree
   {
     digitalWrite(DIR,step_DIR);
     digitalWrite(ENA,LOW);
@@ -69,10 +69,9 @@ void loop()
     delayMicroseconds(500);
     digitalWrite(PUL,LOW);
     delayMicroseconds(500);
+    Xservo.write(servo_MOVE); // to control step motor and servo motor simultaneously, put servo.write into the for loop
   }
 
-    Xservo.write(servo_MOVE); //서보가 더 느릴꺼같아 밑에 넣었는데 아예 스텝 for문 안에 넣어보자
-    
 }
 
 void get_data()
