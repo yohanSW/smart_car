@@ -5,6 +5,7 @@ Servo Xservo;
 int PUL=6; //define Pulse pin
 int DIR=4; //define Direction pin
 int ENA=2; //define Enable Pin
+int SERVO=5; //define Servo Pin
 
 /* Sensor data */
 float Xdata;
@@ -23,7 +24,7 @@ void setup()
   pinMode (PUL, OUTPUT);
   pinMode (DIR, OUTPUT);
   pinMode (ENA, OUTPUT);
-  Xservo.attatch(5);
+  Xservo.attach(SERVO);
   Xservo.write(90); // servo motor must be started at 90 degree
 }
 
