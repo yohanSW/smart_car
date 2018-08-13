@@ -21,10 +21,6 @@ import math
 import time
 #img = cv2.VideoCapture(0)
 #img = cv2.VideoCapture('/home/song/Downloads/road_lowangle.mp4')
-
-#img.set(cv2.CAP_PROP_FRAME_WIDTH,1280)
-#img.set(cv2.CAP_PROP_FRAME_HEIGHT,720)
-#img.set(cv2.CAP_PROP_FPS, 30)
 #img=cv2.VideoCapture('lastYear.mp4')
 SCREEN_WIDTH = 1280  # Screen Width
 SCREEN_HEIGHT = 720  # Screen Height
