@@ -47,15 +47,15 @@ class ControlWheels(object):
             angle = -angle
             minus_sig = 0
         ser_str = '#'+ str(minus_sig) + ' , ' + str(int(angle)) +' , ' + str(stopSig)
-        if ser.readable() :
+        if ser.inWaiting()>0 :
             Gosignal = ser.readline()
             print("sig: ", Gosignal)
-	    if Gosignal == 'G\r\n' :
+            if Gosignal == 'G\r\n' :
                 print("aaa")
-    	        print(ser_str)
+                print(ser_str)
                 ser.flush()
                 ser.write(str.encode(ser_str))
-	        Gosignal = 'B'
+                Gosignal = 'B'
         print("wow")
 
 
