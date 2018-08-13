@@ -20,7 +20,12 @@ import cv2
 import math
 import time
 #img = cv2.VideoCapture(0)
-#img = cv2.VideoCapture('/home/pi/Downloads/lastYear.mp4')
+#img = cv2.VideoCapture('/home/song/Downloads/road_lowangle.mp4')
+
+#img.set(cv2.CAP_PROP_FRAME_WIDTH,1280)
+#img.set(cv2.CAP_PROP_FRAME_HEIGHT,720)
+#img.set(cv2.CAP_PROP_FPS, 30)
+#img=cv2.VideoCapture('lastYear.mp4')
 SCREEN_WIDTH = 1280  # Screen Width
 SCREEN_HEIGHT = 720  # Screen Height
 def adjust_gamma(image, gamma=1.0):
@@ -45,13 +50,17 @@ def image_processing(img):
     stop_status_line = False
     stop_status_light = False
     draw_circle_enable = True
-    crop_image = bgr_image[0:SCREEN_HEIGHT, 0:SCREEN_WIDTH]
+    crop_image = cv2.resize(bgr_image,(SCREEN_WIDTH,SCREEN_HEIGHT))
+    #crop_image = bgr_image[0:SCREEN_HEIGHT, 0:SCREEN_WIDTH]
+    
     clahe = cv2.createCLAHE(clipLimit=3., tileGridSize = (8,8))
     lab = cv2.cvtColor(crop_image.copy(), cv2.COLOR_BGR2LAB)
     l,a,b = cv2.split(lab)
     l2 = clahe.apply(l)
     lab = cv2.merge((l2,a,b))
     crop_image_2 = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+    
+    #crop_image_2 = crop_image.copy()
     gamma = 0.08
     crop_image_2 = adjust_gamma(crop_image_2, gamma=gamma)
     '''
@@ -63,7 +72,7 @@ def image_processing(img):
     '''
         ROI for detecting red light
     '''
-    for_red_light = bgr_image[SCREEN_HEIGHT/3:480, 0:SCREEN_WIDTH].copy()
+    for_red_light = bgr_image[SCREEN_HEIGHT/3:SCREEN_HEIGHT, 0:SCREEN_WIDTH].copy()
     #for_red_light = bgr_image[0:SCREEN_HEIGHT, 0:SCREEN_WIDTH].copy()
 
     '''
@@ -182,7 +191,7 @@ def image_processing(img):
                 sum_of_theta += lines[0][0][1]
             avg_rho = sum_of_rho / len(lines[0])
             avg_theta = sum_of_theta / len(lines[0])
-            angle = math.atan(float(SCREEN_HEIGHT)/(float(SCREEN_WIDTH/2) - (avg_rho)/math.cos(avg_theta))) * (180.0 / math.pi)
+            angle = math.atan(float(SCREEN_HEIGHT)/(float(SCREEN_WIDTH/2) - (avg_rho)/(math.cos(avg_theta)+eps))) * (180.0 / math.pi)
             if angle > 0:
                 angle = 90 - angle
             else:
@@ -192,12 +201,12 @@ def image_processing(img):
                 Exception Handling : Early stop line detection -> just go forward!!
             '''
             if math.fabs(avg_theta * (180.0) / math.pi) > 80 and math.fabs(avg_theta * (180.0) / math.pi) < 100 and math.fabs(avg_rho) < (SCREEN_HEIGHT/2) and stop_status_line == False:
-                cv2.line(crop_image, (320, 480), (320, 0), (255, 0, 255), 5)
+                cv2.line(crop_image, (SCREEN_WIDTH/2, SCREEN_HEIGHT), (SCREEN_WIDTH/2, 0), (255, 0, 255), 5)
                 stop_status_line = False
                 angle = 0.0
             else:
-                cv2.line(crop_image, (int((avg_rho-SCREEN_HEIGHT*math.sin(avg_theta))/(math.cos(avg_theta)+eps)),SCREEN_HEIGHT), (int(avg_rho/math.cos(avg_theta+eps)),0),(255,0,0),3)
-                cv2.line(crop_image, (SCREEN_WIDTH/2,SCREEN_HEIGHT), (int(avg_rho/math.cos(avg_theta+eps)),0),(0,255,0),3)
+                cv2.line(crop_image, (int((avg_rho-SCREEN_HEIGHT*math.sin(avg_theta))/(math.cos(avg_theta)+eps)),SCREEN_HEIGHT), (int(avg_rho/(math.cos(avg_theta)+eps)),0),(255,0,0),3)
+                cv2.line(crop_image, (SCREEN_WIDTH/2,SCREEN_HEIGHT), (int(avg_rho/(math.cos(avg_theta)+eps)),0),(0,255,0),3)
                 if stop_status_line == True:
                     angle = 0.0
         else:
@@ -212,7 +221,9 @@ def image_processing(img):
     if cv2.waitKey(1) & 0xFF == ord('q') :
         print ("interrupt!")
     #return angle, stop_status_line or stop_status_light
-    #cv2.imshow('Real World!',crop_image)
+    cv2.imshow('Real World!',crop_image)
+    #cv2.imshow('edge',edge_image)
+    cv2.imshow('gamma',crop_image_2)
     #cv2.imshow('red', red_hue_image)
     return int(angle), stop_status_line or stop_status_light
 '''
