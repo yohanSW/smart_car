@@ -13,7 +13,7 @@ class ControlWheels(object):
         ''' setup channels and basic stuff '''
         self.db = filedb.fileDB(db=db)
         self._straight_angle = 0
-        self.turning_max = 30
+        self.turning_max = 35
         self._min_angle = -self.turning_max
         self._max_angle = self.turning_max
         self._turning_offset = int(self.db.get('turning_offset', default_value=0))
