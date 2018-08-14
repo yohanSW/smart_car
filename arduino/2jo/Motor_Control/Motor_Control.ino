@@ -93,8 +93,8 @@ void get_data(){
   while(true) 
   {
     
-    //is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
-    is_driving = 1;              
+    is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
+    //is_driving = 1;              
     
     break_order = digitalRead(auto_STOP);
     
