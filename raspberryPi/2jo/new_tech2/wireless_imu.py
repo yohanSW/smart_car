@@ -10,7 +10,17 @@ s=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 s.bind((host, port))
+            
+str_com_1 = "cd /home/pi/Sunfounder_Smart_Video_Car_Kit_for_RaspberryPi/mjpg-streamer/mjpg-streamer"
+str_com_2 = "sudo make USE_LIBV4L2=true clean all"
+str_com_3 = "sudo make DESTDIR=/usr install"
+str_com_4 = "sh start.sh"
 
+subprocess.check_output(str_com_1,shell=True)
+subprocess.check_output(str_com_2,shell=True)
+subprocess.check_output(str_com_3,shell=True)
+subprocess.check_output(str_com_4,shell=True)
+            
 def main():
     for i in range(5):
         message, address = s.recvfrom(8192)
