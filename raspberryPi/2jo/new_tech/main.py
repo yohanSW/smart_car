@@ -12,13 +12,14 @@ def main():
     print ("main code start!")
     #new_tech()
     while True :
-        if GPIO.input(auto_driving_switch)==1:
-            sense.ClutchAlarm()
-
-        elif GPIO.input(new_tech_switch)==1:
-            crush.new_tech()
-        else :
-            sense.AllNormal()
+        judgeNum = sense.judge()
+        if judgeNum == 1:
+            if GPIO.input(auto_driving_switch)==1:
+                sense.ClutchAlarm()
+            elif GPIO.input(new_tech_switch)==1:
+                crush.new_tech()
+            else :
+                sense.AllNormal()
 
 if __name__ == '__main__':
     try:
