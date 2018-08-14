@@ -24,6 +24,7 @@ int ClutchControl = 6;
 #define auto_DRI 9
 #define auto_STOP 10
 int is_driving = 0;
+int is_autoing = 0;
 int break_order = 0;
 //int encoder_boundary = 84; // {3조}
 int encoder_boundary = 94; // {2조}
@@ -77,6 +78,11 @@ void loop() {
   Serial.println(is_driving);
   if(is_driving != 0){
     digitalWrite(ClutchControl,HIGH);
+    if(is_autoing == 0)
+    {
+      delay(2000);
+      is_autoing = 1;
+    }
     //Serial.println("wow");
     break_mode();
     control(degree);
@@ -85,6 +91,7 @@ void loop() {
     digitalWrite(BRAKE,HIGH);
     digitalWrite(ClutchControl,LOW);
     encoderVal = encoderVal + getEncoderTurn(); // encoder 각도 갱신
+    is_autoing = 0;
   }
     
 } // loop문 괄호
