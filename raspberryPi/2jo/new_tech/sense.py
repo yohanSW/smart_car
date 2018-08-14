@@ -44,10 +44,21 @@ def sensing():
         print("sona : " + str(sona))
         print("heartpulse : " + str(heartpulse))
         print("touchresult : " + str(touchresult))
-        
     else :
         return -1, -1, -1, -1, -1
     return impact, fire, sona, heartpulse, touchresult
 
+def judge():
+    global Gosignal
+    if ser.inWaiting()>0 :
+        Gosignal = ser.readline()
+        print("sig: ", Gosignal)
+        if Gosignal == 'G\r\n' :
+            print("aaa")
+            return 1
+        else:
+            return 0
+    else:
+        return 0
 
 
