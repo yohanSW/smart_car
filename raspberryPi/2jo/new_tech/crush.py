@@ -6,39 +6,8 @@ import gps_detect
 import subprocess
 GPIO.setmode(GPIO.BOARD)
 pin = 11 #LED pin 
-#BrakeControl = 13 #Brake control pin number ( In Arduino , pin 10 )
-#ClutchAlarm = 15 #Clutch Alarm to Arduino ( In Arduino, pin 9 )
-#ClutchControl = 16 #Clutch control pin number
 NoTouchStack = 0
-auto_driving_switch = 18 #auto_driving_switch
-new_tech_switch = 22 #new_tech_switch
-#ser = serial.Serial("/dev/ttyACM0",115200)
 GPIO.setup(pin,GPIO.OUT)
-#GPIO.setup(ClutchControl,GPIO.OUT)
-#GPIO.setup(BrakeControl,GPIO.OUT)
-#GPIO.setup(ClutchAlarm,GPIO.OUT)
-GPIO.setup(auto_driving_switch , GPIO.IN)
-GPIO.setup(new_tech_switch , GPIO.IN)
-
-def main():
-    print ("main code start!")
-    #new_tech()
-    while True :
-        if GPIO.input(auto_driving_switch)==1:
-            #sense.ClutchControl()
-            sense.ClutchAlarm()
-            #sense.BrakeControl()
-            #GPIO.output(ClutchControl,True) ##Auto Driving start
-            #GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
-            #GPIO.output(BrakeControl,False) ##if the car is on fire, car must be stopped
-        elif GPIO.input(new_tech_switch)==1:
-            new_tech()
-        else :
-            sense.AllNormal()
-            #GPIO.output(ClutchControl,False) ##Auto Driving start
-            #GPIO.output(ClutchAlarm,False) ##Alarm to Arduino that Clutch is on signal
-            #GPIO.output(BrakeControl,False) ##if the car is on fire, car must be stopped
-
 
 
 
@@ -75,7 +44,7 @@ def new_tech():
             print(com_alarm)
             Accident = 3
             if touchresult == 0 :
-            NoTouchStack = NoTouchStack + 1
+                NoTouchStack = NoTouchStack + 1
             if NoTouchStack == 2 :
                 #sense.ClutchControl()
                 sense.ClutchAlarm()
@@ -122,7 +91,7 @@ def new_tech():
     except Exception as e:
         print(e)
         #GPIO.cleanup()
-        break
+        #break
 
 def destroy():
     return 0
@@ -149,9 +118,4 @@ def led_sos():
             time.sleep(0.25)
         time.sleep(1)
 
-if __name__ == '__main__':
-    try:
-        main()
-    except KeyboardInterrupt:
-        destroy()
 
