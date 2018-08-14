@@ -80,7 +80,7 @@ void loop() {
     digitalWrite(ClutchControl,HIGH);
     if(is_autoing == 0)
     {
-      delay(2000);
+      //delay(5000);
       is_autoing = 1;
     }
     //Serial.println("wow");
