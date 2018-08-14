@@ -26,7 +26,7 @@ int ClutchControl = 6;
 int is_driving = 0;
 int break_order = 0;
 //int encoder_boundary = 84; // {3조}
-int encoder_boundary = 102; // {2조}
+int encoder_boundary = 94; // {2조}
 
 double steer_angle; // 회전시키고자 하는 스티어링 각도
 double degree; // 회전시키고자 하는 엔코더 각도
@@ -73,9 +73,11 @@ void loop() {
 
   steer_angle = wheel_angle * 13 ; // 스티어링 각도와 조향 각도의 비 13 : 1
   degree = steer_angle * gear_ratio;
-
+  is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
+  Serial.println(is_driving);
   if(is_driving != 0){
     digitalWrite(ClutchControl,HIGH);
+    //Serial.println("wow");
     break_mode();
     control(degree);
   }
@@ -93,7 +95,7 @@ void get_data(){
   while(true) 
   {
     
-    is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
+    //is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
     //is_driving = 1;              
     
     break_order = digitalRead(auto_STOP);

@@ -153,7 +153,7 @@ void loop(){
     Serial.println(fir);
     Serial.println(distance);
     Serial.println(BPM);
-    Serial.println(touch_result);
+    Serial.println(touch);
     RaspSignal = 'I';
   }
   else if (RaspSignal == 'W')
