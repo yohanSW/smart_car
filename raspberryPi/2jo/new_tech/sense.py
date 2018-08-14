@@ -3,12 +3,12 @@ import serial
 ser = serial.Serial("/dev/ttyACM0",115200)
 def WaitSignal():
     #ser.write(str.encode('W')) #W is Wait
-    ser.write(str.encode('#5')
+    ser.write(str.encode('#5'))
     print("SOS Signal Activated")
 
 def BrakeControl():
     #ser.write(str.encode('B')) #B is Brake
-    ser.write(str.encode('#4')
+    ser.write(str.encode('#4'))
     print("Brake Brake Brake")
 
 """
@@ -19,12 +19,12 @@ def BrakeControl():
 
 def ClutchAlarm():
     #ser.write(str.encode('A')) #A is clutch Alarm
-    ser.write(str.encode('#2')
+    ser.write(str.encode('#2'))
     print("Clutch signal is transmitted to Motor Control Arduino")
 
 def AllNormal():
     #ser.write(str.encode('N')) #N is Normal
-    ser.write(str.encode('#3')
+    ser.write(str.encode('#3'))
     print("All state is normal, manual driving is started again")
     
 def GoSignal():
@@ -34,16 +34,26 @@ def GoSignal():
 def sensing():
     ##print('c')
     if ser.readable() :
-        impact = int(ser.readline())
-        fire = int(ser.readline())
-        sona = int(ser.readline())
-        heartpulse = int(ser.readline())
-        touchresult = int(ser.readline())
-        print("impact : " + str(impact))
-        print("fire : " + str(fire))
-        print("sona : " + str(sona))
-        print("heartpulse : " + str(heartpulse))
-        print("touchresult : " + str(touchresult))
+        print ("wow")
+        temp = ser.readline()
+        print (temp)
+        if temp == b'G\r\n':
+            temp2 = ser.readline()
+            if temp2 !=b'G\r\n':
+                impact = int(temp2)
+                fire = int(ser.readline())
+                sona = int(ser.readline())
+                heartpulse = int(ser.readline())
+                touchresult = int(ser.readline())
+                print("impact : " + str(impact))
+                print("fire : " + str(fire))
+                print("sona : " + str(sona))
+                print("heartpulse : " + str(heartpulse))
+                print("touchresult : " + str(touchresult))
+            else :
+                return -1, -1, -1, -1, -1
+        else :
+            return -1, -1, -1, -1, -1
     else :
         return -1, -1, -1, -1, -1
     return impact, fire, sona, heartpulse, touchresult
@@ -53,7 +63,7 @@ def judge():
     if ser.inWaiting()>0 :
         Gosignal = ser.readline()
         print("sig: ", Gosignal)
-        if Gosignal == 'G\r\n' :
+        if Gosignal ==b'G\r\n' :
             print("aaa")
             return 1
         else:

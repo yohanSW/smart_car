@@ -36,29 +36,30 @@ def new_tech():
             #GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
             Accident = 1
         """
+        """
         if fire <= 400 : ##fire signal is measured as analog, if it is over 500, then there are fire around sensor.
             com_alarm = "'Fire Fire Fire'"
             print(com_alarm)
             sense.BrakeControl()
             #GPIO.output(BrakeControl,True) ##if the car is on fire, car must be stopped
             Accident = 2
+        """
         if impact >= 400 and ( sona <= 10 or sona >= 4000 ) : ##sona data occasionally measured as 2000~2500 without any reason.
             com_alarm = "'Car crush has been happened'"
             print(com_alarm)
             Accident = 3
-            if touchresult == 0 :
-                NoTouchStack = NoTouchStack + 1
-            if NoTouchStack == 2 :
-                #sense.ClutchControl()
+        
+        if touchresult <= 30 :
+            NoTouchStack = NoTouchStack + 1
+            if NoTouchStack == 3 :
                 sense.ClutchAlarm()
-                #GPIO.output(ClutchControl,True) ##Auto Driving start
-                #GPIO.output(ClutchAlarm,True) ##Alarm to Arduino that Clutch is on signal
                 print("Driver can't handle the car. Start the Auto Driving Mode")
                 Accident = 4
                 NoTouchStack = 0
-            else :
-                NoTouchStack = 0
-            ###########################################################################################################        
+        else :
+            NoTouchStack = 0
+        
+###########################################################################################################        
         if Accident > 0 : # if Accident happend,
             sense.WaitSignal()
             led_sos()
