@@ -26,7 +26,7 @@ int ClutchControl = 6;
 int is_driving = 0;
 int break_order = 0;
 //int encoder_boundary = 84; // {3조}
-int encoder_boundary = 89; // {2조}
+int encoder_boundary = 102; // {2조}
 
 double steer_angle; // 회전시키고자 하는 스티어링 각도
 double degree; // 회전시키고자 하는 엔코더 각도
