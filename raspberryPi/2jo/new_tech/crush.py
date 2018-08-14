@@ -7,6 +7,7 @@ import subprocess
 GPIO.setmode(GPIO.BOARD)
 pin = 11 #LED pin 
 NoTouchStack = 0
+geo_count = 0
 GPIO.setup(pin,GPIO.OUT)
 
 
@@ -19,6 +20,7 @@ def new_tech():
     try:
         global NoTouchStack
         global com_alarm
+        global geo_count
         com_alarm = "''"
         Accident = 0
         
@@ -71,14 +73,17 @@ def new_tech():
             subprocess.check_output(str_com_4,shell=True)
             subprocess.check_output(str_com_5,shell=True)
             print("GPS detection started")
-            
-            #gps_detect()
-            str_com_6 = "sudo python3 gps_detect.py"
-            subprocess.check_output(str_com_6,shell=True)
-            print("GPS detection finished and Map was downloaded on the folder")
-            ##upload twitter
-            ####make code here!
-            
+            if geo_count == 0 : 
+                #gps_detect()
+                str_com_6 = "sudo python3 gps_detect.py"
+                subprocess.check_output(str_com_6,shell=True)
+                print("GPS detection finished and Map was downloaded on the folder")
+                ##upload twitter
+                ####make code here!
+                geo_count += 1
+            else :
+                print("GPS is already once detected, so no longer we print gps...")
+                
             print("Image is uploaded on twit")
             str_com ="python3 post_image.py high_resolution_image.png " + com_alarm
             subprocess.check_output(str_com,shell=True)
