@@ -202,7 +202,7 @@ def image_processing(img):
                 Exception Handling : Early stop line detection -> just go forward!!
             '''
             if math.fabs(avg_theta * (180.0) / math.pi) > 80 and math.fabs(avg_theta * (180.0) / math.pi) < 100 and math.fabs(avg_rho) < (SCREEN_HEIGHT/2) and stop_status_line == False:
-                cv2.line(crop_image, (320, 480), (320, 0), (255, 0, 255), 5)
+                cv2.line(crop_image, (SCREEN_WIDTH/2, SCREEN_HEIGHT), (SCREEN_WIDTH/2, 0), (255, 0, 255), 5)
                 stop_status_line = False
                 angle = 0.0
             else:
