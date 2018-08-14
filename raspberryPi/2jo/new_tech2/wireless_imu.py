@@ -1,6 +1,6 @@
 import socket, traceback
 import serial
-
+import subprocess
 
 ser = serial.Serial("/dev/ttyACM0",115200)
 Gosignal = 'G'
