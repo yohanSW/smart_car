@@ -14,6 +14,7 @@ GPIO.setup(pin,GPIO.OUT)
 
 def new_tech():
     sense.GoSignal()
+    time.sleep(1)
     impact, fire, sona, heartpulse, touchresult  = sense.sensing()
     '''if fire == -1 :
         continue'''
