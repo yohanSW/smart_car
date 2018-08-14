@@ -119,6 +119,7 @@ void loop(){
   //Serial.print(millis() - start);        // check on performance in milliseconds
   //Serial.print("\t");                    // tab character for debug windown spacing
   //***********************************
+  Serial.println('G');
   RaspSignal = get_data();
   /*if(RaspSignal == 'W') // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked ,W is Wait
   {
