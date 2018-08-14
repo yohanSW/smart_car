@@ -163,12 +163,14 @@ def main():
           gps2 = gps.split(',',14)
           print ("SPEED:",gps2[7])
           print ("ANGLE:",gps2[8])
-         #print ("")
+          #print ("")
         if lat > 30 and lng > 120 :
           print("Get the right lan and lon")
           break
         else :
-          return
+          lat = 37.5083094
+          lng = 127.0673151
+          break
 
      # Create a new instance of GoogleMap Downloader
     gmd = GoogleMapDownloader(lat-0.0038, lng-0.0108, 18)
