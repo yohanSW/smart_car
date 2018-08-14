@@ -161,7 +161,6 @@ void loop(){
   {
     RaspSignal = 0;
   }
-  delay(500);
 }
 
 int get_data(){
