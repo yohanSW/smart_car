@@ -3,7 +3,7 @@
 #define PROCESSING_VISUALIZER 1
 #define SERIAL_PLOTTER  2
 
-char RaspSignal = 'I'; //Raspberry Pi signal for various function in raspberryPi board ,I is Idle
+int RaspSignal = 0; //Raspberry Pi signal for various function in raspberryPi board ,I is Idle
 int BrakeControl = 7;
 //int ClutchControl = 12;
 int ClutchAlarm = 11;
@@ -119,48 +119,78 @@ void loop(){
   //Serial.print(millis() - start);        // check on performance in milliseconds
   //Serial.print("\t");                    // tab character for debug windown spacing
   //***********************************
-  RaspSignal = Serial.read();
+  RaspSignal = get_data();
   /*if(RaspSignal == 'W') // to avoid the storage of sensor data in RaspberryPi board, during LED is blinked ,W is Wait
   {
     delay(14200); //LED blinked time
-    RaspSignal = 'I';
+    RaspSignal = 0;
   }*/
-  if(RaspSignal == 'B') // B is brake
+  if(RaspSignal == 4) // B is brake
   {
     digitalWrite(BrakeControl,HIGH);
-    RaspSignal = 'I';
+    RaspSignal = 0;
   }
-  else if(RaspSignal == 'C') // C is Clutch control
+  /*else if(RaspSignal == 'C') // C is Clutch control
   {
     //digitalWrite(ClutchControl,HIGH);
-    RaspSignal = 'I';
-  }
-  else if(RaspSignal == 'A') // A is clutch Alarm
+    RaspSignal = 0;
+  }*/
+  else if(RaspSignal == 2) // A is clutch Alarm
   {
     digitalWrite(ClutchAlarm,HIGH);
-    RaspSignal = 'I';
+    RaspSignal = 0;
   }
-  else if(RaspSignal == 'N') // N is Normal
+  else if(RaspSignal == 3) // N is Normal
   {
     digitalWrite(BrakeControl,LOW);
     //digitalWrite(ClutchControl,LOW);
     digitalWrite(ClutchAlarm,LOW);
-    RaspSignal = 'I';
+    RaspSignal = 0;
   }
-  else if (RaspSignal == 'G')
+  else if (RaspSignal == 1)
   {
     Serial.println(vibration_num);
     Serial.println(fir);
     Serial.println(distance);
     Serial.println(BPM);
     Serial.println(touch);
-    RaspSignal = 'I';
+    RaspSignal = 0;
   }
-  else if (RaspSignal == 'W')
+  else if (RaspSignal == 5)
   {
-    RaspSignal = 'I';
+    RaspSignal = 0;
   }
   delay(500);
+}
+
+int get_data(){
+  int num;
+    /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
+  while(true) 
+  {
+    if(Serial.available())
+    {
+      if(Serial.find('#'))
+      {
+        num = Serial.parseInt();
+        //minus_sig = Serial.parseInt();
+        //wheel_angle=Serial.parseInt();
+        //if(minus_sig == 0)
+        //  wheel_angle = -wheel_angle;
+        //is_break = Serial.parseInt();
+        //if(is_break == 1 || break_order ==1)
+        //  is_break = 1;
+        //Serial.print("wheel_angle : ");
+        //Serial.println(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
+        
+      }
+      else
+        continue;
+      return num;
+    }
+    else
+      continue;
+  }
 }
  
 void ledFadeToBeat(){
