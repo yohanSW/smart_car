@@ -5,13 +5,13 @@ from image_processing import image_processing
 import numpy as np
 import cv2
 #*********************************************************************************
-#img = cv2.VideoCapture(0)
-img = cv2.VideoCapture('/home/song/Desktop/lastYear.mp4')
+img = cv2.VideoCapture(1)
+#img = cv2.VideoCapture('/home/song/Desktop/WIN_20180809_18_58_34_Pro.mp4')
 
 #lattepanda
 
-img.set(cv2.CAP_PROP_FRAME_WIDTH,1280)
-img.set(cv2.CAP_PROP_FRAME_HEIGHT,720)
+img.set(cv2.CAP_PROP_FRAME_WIDTH,320)
+img.set(cv2.CAP_PROP_FRAME_HEIGHT,240)
 img.set(cv2.CAP_PROP_FPS, 30)
 
 """
@@ -33,7 +33,7 @@ adjusted_angle      = 0    # Calibrate the front wheel angle whose direction is 
 approach_angle      = 3
 error_signal        = -700
 turning_max         = 40
-image_cnt	    = 30
+image_cnt       = 7
 
 cw = controlWheels.ControlWheels()
 cw.offset = 0

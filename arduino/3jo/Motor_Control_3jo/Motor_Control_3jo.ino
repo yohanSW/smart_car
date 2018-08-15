@@ -209,6 +209,11 @@ void control(int degree){
     if ( encoderVal == degree  ){
       digitalWrite(mt_STOP,HIGH);
       mt_ctrl_cnt=0;
+      /*
+      while(Serial.readable()){
+        Serial.read()
+      }
+      */
       break;
     }
    else if(encoderVal >= encoder_boundary || encoderVal <= -encoder_boundary ){
