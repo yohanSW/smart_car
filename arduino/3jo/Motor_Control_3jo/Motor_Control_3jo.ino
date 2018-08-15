@@ -12,7 +12,7 @@
 
 /* 브레이크 모터 부분 */
 #define brk_DIR 13 // 모터드라이버 -> 릴레이, LOW: CW / HIGH: CCW
-#define brk_RELEASE 2 // 모터드라이버 -> 릴레이, HIGH: 브레이크 모터 정지 / LOW: 브레이크 모터 작동
+#define brk_RELEASE 2 // 모터드라이버 -> 릴레이, HIGH: 브레이크 모터 작동 / LOW: 브레이크 모터 정지
 #define brk_SPEED 5 // 모터드라이버, PWM을 통한 모터 속도제어
 
 /* 자율주행여부, 브레이크제어 코드 */
@@ -50,7 +50,7 @@ void setup() {
  pinMode (brk_DIR, OUTPUT);
  pinMode (auto_DRI, INPUT);
  pinMode (auto_STOP, INPUT); 
- digitalWrite (brk_RELEASE , HIGH); // 데이터를 입력받기 전엔 브레이크 모터는 정지상태로 시작
+ digitalWrite (brk_RELEASE , LOW); // 데이터를 입력받기 전엔 브레이크 모터는 정지상태로 시작
  digitalWrite (swpin, HIGH); // encoder 동작을 위한 switch ON
  digitalWrite (mt_STOP, HIGH); // 데이터를 입력받기 전엔 모터는 정지상태로 시작
  Serial.begin(115200);
@@ -116,10 +116,10 @@ void brake_mode(){
   if (is_brake == 2)
   {
     digitalWrite(brk_DIR,HIGH); // 당겨진 브레이크 모터 풀어주기 위해 방향 반대로 설정
-    digitalWrite(brk_RELEASE,LOW); // 고정된 브레이크 모터 해제
+    digitalWrite(brk_RELEASE,HIGH); // 고정된 브레이크 모터 해제
     digitalWrite(brk_SPEED,255);
     delay(1500); //브레이크 모터 해제
-    digitalWrite(brk_RELEASE,HIGH); // 해체 한 상태로 브레이크 모터 고정
+    digitalWrite(brk_RELEASE,LOW); // 해체 한 상태로 브레이크 모터 고정
     is_braking = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
     //Serial.println(is_brake);
   }
@@ -127,10 +127,10 @@ void brake_mode(){
   if(is_brake == 1 && is_braking == 0) //정지 신호 발생, 그리고 원래 브레이크모터 동작은 없었음
   { 
     digitalWrite(brk_DIR,LOW); // 항상 CW방향으로 회전
-    digitalWrite(brk_RELEASE,LOW); //정지 동작을 위해 브레이크 모터 고정 해제   
+    digitalWrite(brk_RELEASE,HIGH); //정지 동작을 위해 브레이크 모터 고정 해제   
     digitalWrite(brk_SPEED,255);   
     delay(1500); // 1.5초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
-    digitalWrite(brk_RELEASE,HIGH); // 차량 브레이크가 당겨진 상태로 고정
+    digitalWrite(brk_RELEASE,LOW); // 차량 브레이크가 당겨진 상태로 고정
     is_braking = 1; //브레이크모터가 동작중인데 loop를 돌아 중복하여 브레이크모터 동작 방지
   }
   else if(is_brake ==1 && is_braking == 1) // 여전히 정지 신호 발생, 브레이크 모터는 동작 중
@@ -140,10 +140,10 @@ void brake_mode(){
   else if(is_brake == 0 && is_braking == 1) // 브레이크 밟힌 상태, 정지 신호 해제
   {
     digitalWrite(brk_DIR,HIGH); // 당겨진 브레이크 모터 풀어주기 위해 방향 반대로 설정
-    digitalWrite(brk_RELEASE,LOW); // 고정된 브레이크 모터 해제
+    digitalWrite(brk_RELEASE,HIGH); // 고정된 브레이크 모터 해제
     digitalWrite(brk_SPEED,255);
     delay(1500); //브레이크 모터 해제
-    digitalWrite(brk_RELEASE,HIGH); // 해체 한 상태로 브레이크 모터 고정
+    digitalWrite(brk_RELEASE,LOW); // 해체 한 상태로 브레이크 모터 고정
     is_braking = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
   }
   else {
