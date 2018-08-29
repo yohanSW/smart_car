@@ -98,7 +98,9 @@ void loop() {
 
 
 void get_data(){
-    /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
+ while(true) 
+  {   
+ /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
     break_order = digitalRead(auto_STOP);
     
     if(Serial.available()){
@@ -113,9 +115,14 @@ void get_data(){
           is_break = 1;
         //Serial.print("wheel_angle : ");
         //Serial.println(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
-        
       }
+     else
+        continue;
+     break;
     }
+    else
+    continue;
+  }
 }
 
 void break_mode(){
