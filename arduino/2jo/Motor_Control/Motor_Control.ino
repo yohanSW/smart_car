@@ -99,16 +99,9 @@ void loop() {
 
 void get_data(){
     /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
-  while(true) 
-  {
-    
-    //is_driving = digitalRead(auto_DRI);  // 선택사항 -> 자율주행 모드 연결시 사용
-    //is_driving = 1;              
-    
     break_order = digitalRead(auto_STOP);
     
-    if(Serial.available())
-    {
+    if(Serial.available()){
       if(Serial.find('#'))
       {
         minus_sig = Serial.parseInt();
@@ -122,13 +115,7 @@ void get_data(){
         //Serial.println(wheel_angle); //0.5초 딜레이 동안 받는 신호 수 만큼 angle 출력
         
       }
-      else
-        continue;
-      break;
     }
-    else
-      continue;
-  }
 }
 
 void break_mode(){
