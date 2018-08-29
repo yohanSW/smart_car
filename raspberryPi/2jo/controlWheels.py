@@ -50,6 +50,8 @@ class ControlWheels(object):
         if ser.inWaiting()>0 :
             Gosignal = ser.readline()
             print("sig: ", Gosignal)
+            while(Gosignal != 'G\r\n'):
+                Gosignal = ser.readline()
             if Gosignal == 'G\r\n' :
                 print("aaa")
                 print(ser_str)
