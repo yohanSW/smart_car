@@ -69,7 +69,7 @@ void setup() {
 
 void loop() {
   /* 입력가능한 불가능한 상태일 경우, while문 무한루프. 즉, 대기상태 */
-  Serial.print("\n");
+  //Serial.print("\n");
   Serial.println('G');
   get_data();
 
@@ -184,8 +184,8 @@ void control(int degree){
     if (digitalRead(swpin) == LOW)
       encoderVal = 0;
 
-    //Serial.print("encoderVal : ");  
-    Serial.print(encoderVal);
+    Serial.print("encoderVal : ");  
+    Serial.println(encoderVal);
     digitalWrite(BRAKE,LOW); // 모터동작을 시작하기 위해 브레이크 해제
     if (encoderVal <= degree) // 방향 제어
       digitalWrite(DIR, LOW);// CW 방향
