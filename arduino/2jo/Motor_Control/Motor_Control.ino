@@ -132,7 +132,7 @@ void break_mode(){
     digitalWrite(brk_DIR,LOW); // 항상 CW방향으로 회전
     digitalWrite(brk_BRAKE,LOW); //정지 동작을 위해 브레이크 모터 고정 해제   
     digitalWrite(brk_SPEED,255);   
-    delay(700); // 0.7초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
+    delay(1500); // 1.5초 동안 브레이크 모터를 동작시켜 정지 동작 수행   
     digitalWrite(brk_BRAKE,HIGH); // 차량 브레이크가 당겨진 상태로 고정
     is_breakING = 1; //브레이크모터가 동작중인데 loop를 돌아 중복하여 브레이크모터 동작 방지
   }
@@ -142,10 +142,11 @@ void break_mode(){
   }
   else if(is_break == 0 && is_breakING == 1) // 브레이크 모터 동작중, 정지 신호 해제
   {
+    delay(3000); // 3초동안 기다린 후 브레이크 해제 동작 실행
     digitalWrite(brk_DIR,HIGH); // 당겨진 브레이크 모터 풀어주기 위해 방향 반대로 설정
     digitalWrite(brk_BRAKE,LOW); // 고정된 브레이크 모터 해제
     digitalWrite(brk_SPEED,255);
-    delay(700); // 0.7초 동안 브레이크 모터 해제
+    delay(1500); // 1.5초 동안 브레이크 모터 해제
     digitalWrite(brk_BRAKE,HIGH); // 해체 한 상태로 브레이크 모터 고정
     is_breakING = 0; //브레이크모터는 더 이상 동작하지 않으므로, 다음 정지동작을 위해 0으로 초기화
   }
